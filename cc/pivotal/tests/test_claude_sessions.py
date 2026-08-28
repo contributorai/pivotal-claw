@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 import tempfile
 import unittest
+from unittest import mock
 
 from cc.pivotal import claude_sessions
 
@@ -81,6 +82,16 @@ class ClaudeSessionTests(unittest.TestCase):
             )
             self.assertEqual("abc-123", meta.session_id)
 
+    def test_runtime_initialization_does_not_require_installed_claude(self):
+        with mock.patch.object(
+            claude_sessions,
+            "resolve_claude_executable",
+            side_effect=FileNotFoundError("Claude CLI executable not found"),
+        ):
+            runtime = claude_sessions.ClaudeRuntime()
+
+        self.assertIsNone(runtime.claude_executable)
+
     def test_resume_opens_terminal_with_resume_flag(self):
         calls = []
 
@@ -90,7 +101,10 @@ class ClaudeSessionTests(unittest.TestCase):
                 returncode = 0
             return Result()
 
-        runtime = claude_sessions.ClaudeRuntime(runner=runner)
+        runtime = claude_sessions.ClaudeRuntime(
+            runner=runner,
+            claude_executable=Path("/usr/local/bin/claude"),
+        )
         runtime.resume("abc-123", Path("/tmp/my project"))
 
         self.assertEqual(1, len(calls))
@@ -105,7 +119,10 @@ class ClaudeSessionTests(unittest.TestCase):
                 returncode = 1
             return Result()
 
-        runtime = claude_sessions.ClaudeRuntime(runner=runner)
+        runtime = claude_sessions.ClaudeRuntime(
+            runner=runner,
+            claude_executable=Path("/usr/local/bin/claude"),
+        )
         with self.assertRaises(RuntimeError):
             runtime.resume("abc-123", Path("/tmp"))
 

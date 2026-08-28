@@ -95,11 +95,21 @@ def wait_for_session_file(
 
 
 class ClaudeRuntime:
-    def __init__(self, *, claude_home: Path | None = None, launch_dir: Path | None = None, runner=subprocess.run):
+    def __init__(
+        self,
+        *,
+        claude_home: Path | None = None,
+        launch_dir: Path | None = None,
+        runner=subprocess.run,
+        claude_executable: Path | str | None = None,
+    ):
         self.claude_home = (claude_home or Path.home() / ".claude").expanduser()
         self.launch_dir = (launch_dir or Path.home() / ".acc" / "claude" / "sessions").expanduser()
         self.runner = runner
-        self.claude_executable = resolve_claude_executable()
+        self.claude_executable = Path(claude_executable).expanduser() if claude_executable is not None else None
+
+    def _resolve_executable(self) -> Path:
+        return self.claude_executable or resolve_claude_executable()
 
     def preview(self, story: dict, project_dir: Path) -> str:
         return build_story_prompt(story, project_dir)
@@ -109,7 +119,7 @@ class ClaudeRuntime:
         prompt = self.preview(story, project_dir)
         script = write_launch_script(
             prompt, project_dir, story.get("display_text") or story.get("text", "story"), session_id,
-            self.launch_dir, claude_executable=self.claude_executable,
+            self.launch_dir, claude_executable=self._resolve_executable(),
         )
         command = f'tell application "Terminal" to do script {json.dumps(str(script))}'
         completed = self.runner(["osascript", "-e", 'tell application "Terminal" to activate', "-e", command], check=False)
@@ -127,7 +137,7 @@ class ClaudeRuntime:
     def resume(self, session_id: str, cwd: Path) -> None:
         shell = (
             f"cd {shlex.quote(str(cwd))} && "
-            f"exec {shlex.quote(str(self.claude_executable))} --resume {shlex.quote(session_id)}"
+            f"exec {shlex.quote(str(self._resolve_executable()))} --resume {shlex.quote(session_id)}"
         )
         command = f'tell application "Terminal" to do script {json.dumps(shell)}'
         completed = self.runner(["osascript", "-e", 'tell application "Terminal" to activate', "-e", command], check=False)
