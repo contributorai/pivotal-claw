@@ -1,0 +1,3306 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pivotal</title>
+  <!-- Load Premium Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      /* Curated HSL Light Palette */
+      --hue-blue: 215;
+      --hue-orange: 35;
+      --hue-green: 142;
+      --hue-purple: 271;
+      --hue-slate: 218;
+
+      --blue: hsl(var(--hue-blue), 90%, 55%);
+      --orange: hsl(var(--hue-orange), 95%, 50%);
+      --green: hsl(var(--hue-green), 76%, 40%);
+      --purple: hsl(var(--hue-purple), 76%, 58%);
+      --red: hsl(0, 84%, 60%);
+      
+      --page-bg: #f4f6fa;
+      --card-bg: #ffffff;
+      --pane-bg: #eaecf2;
+      --ink: #1e293b;
+      --muted: #64748b;
+      --line: #cbd5e1;
+      --space-1: 8px;
+      --space-2: 16px;
+      --space-3: 24px;
+      --space-4: 32px;
+      --space-half: 4px;
+      --border-radius-card: 2px;
+      --border-radius-pane: 14px;
+
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.02);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.03);
+
+      --transition-fast: 0.15s ease;
+      --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+      /* Theme-swappable surface tokens (dark overrides below) */
+      --strong-bg: var(--ink);
+      --header-bg: rgba(255, 255, 255, 0.85);
+      --surface-hover: #f8fafc;
+      --surface-subtle: #f1f5f9;
+      --surface-alt: #fafbfe;
+      --tag-autocomplete-bg: #ffffff;
+      --code-text: #0f172a;
+      --track-bg: #e2e8f0;
+      --border-soft: rgba(226, 232, 240, 0.8);
+      --border-soft-90: rgba(226, 232, 240, 0.9);
+      --border-soft-50: rgba(226, 232, 240, 0.5);
+      --btn-hover-border: #94a3b8;
+      --task-hover-border: rgba(203, 213, 225, 0.8);
+      --nav-pressed-hover-bg: #334155;
+      --quick-add-overlay: rgba(255,255,255,0.5);
+      --scrollbar-track: rgba(0,0,0,0.03);
+      --scrollbar-thumb: rgba(0,0,0,0.15);
+      --scrollbar-thumb-hover: rgba(0,0,0,0.25);
+      --status-ok-bg: #f0fdf4;
+      --status-ok-border: #bbf7d0;
+      --status-busy-bg: #eff6ff;
+      --status-busy-border: #bfdbfe;
+      --status-err-bg: #fef2f2;
+      --status-err-border: #fca5a5;
+
+      --card-doing-bg: hsl(215 85% 96%);
+      --card-done-bg: hsl(142 50% 96%);
+      --focus-ring: #d97706;
+      --gap-bg: rgba(37, 99, 235, 0.07);
+      --gap-line: rgba(37, 99, 235, 0.45);
+      --saved-wash: rgba(22, 163, 74, 0.16);
+    }
+
+    /* Dark mode palette, sourced from portfolio/prototype-1-focus-groups.html */
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --page-bg: #16181d;
+      --card-bg: #20242c;
+      --pane-bg: #1c1f26;
+      --ink: #e7e9ee;
+      --muted: #8b909c;
+      --line: #2a2e37;
+
+      --blue: hsl(var(--hue-blue), 90%, 64%);
+      --orange: hsl(var(--hue-orange), 95%, 58%);
+      --green: hsl(var(--hue-green), 55%, 55%);
+      --purple: hsl(var(--hue-purple), 76%, 68%);
+      --red: hsl(0, 84%, 66%);
+
+      --strong-bg: #0d0f13;
+      --header-bg: rgba(22, 24, 29, 0.85);
+      --surface-hover: #262b34;
+      --surface-subtle: #20242c;
+      --surface-alt: #191c22;
+      --tag-autocomplete-bg: #20242c;
+      --code-text: #e7e9ee;
+      --track-bg: #2c313b;
+      --border-soft: rgba(255,255,255,0.08);
+      --border-soft-90: rgba(255,255,255,0.10);
+      --border-soft-50: rgba(255,255,255,0.06);
+      --btn-hover-border: #4b5563;
+      --task-hover-border: rgba(255,255,255,0.14);
+      --nav-pressed-hover-bg: #363c47;
+      --quick-add-overlay: rgba(255,255,255,0.04);
+      --scrollbar-track: rgba(255,255,255,0.04);
+      --scrollbar-thumb: rgba(255,255,255,0.14);
+      --scrollbar-thumb-hover: rgba(255,255,255,0.22);
+      --status-ok-bg: rgba(52, 199, 89, 0.14);
+      --status-ok-border: rgba(52, 199, 89, 0.35);
+      --status-busy-bg: rgba(77, 163, 255, 0.14);
+      --status-busy-border: rgba(77, 163, 255, 0.35);
+      --status-err-bg: rgba(255, 82, 82, 0.14);
+      --status-err-border: rgba(255, 82, 82, 0.35);
+
+      --card-doing-bg: #1d3b53;
+      --card-done-bg: #1e4620;
+      --focus-ring: #f39c12;
+      --gap-bg: rgba(91, 141, 239, 0.10);
+      --gap-line: rgba(91, 141, 239, 0.55);
+      --saved-wash: rgba(52, 199, 89, 0.20);
+    }
+
+    * { box-sizing: border-box; }
+    
+    body {
+      margin: 0;
+      background: var(--page-bg);
+      color: var(--ink);
+      font-family: 'Inter', -apple-system, sans-serif;
+      font-size: 13px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: grid;
+      grid-template-columns: auto minmax(180px, 360px) minmax(150px, 220px) minmax(150px, 220px) 1fr auto auto auto;
+      gap: 16px;
+      align-items: center;
+      padding: 12px 20px;
+      background: var(--header-bg);
+      border-bottom: 1px solid var(--border-soft);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    }
+    
+    .logo {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      background: linear-gradient(135deg, var(--blue) 0%, var(--purple) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+    
+    input[type="search"], select {
+      font-family: inherit;
+      font-size: 13px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--card-bg);
+      color: var(--ink);
+      height: 36px;
+      padding: 0 12px;
+      outline: none;
+      transition: all var(--transition-fast);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    input[type="search"]:focus, select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    #portfolio-filter-wrap { display: flex; min-width: 0; }
+
+    #portfolio-filter { flex: 1 1 auto; min-width: 0; }
+
+    /* An active scope has to be obvious without costing header space. */
+    #portfolio-filter.scoped {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.12);
+      font-weight: 600;
+    }
+
+    button {
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      height: 34px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--card-bg);
+      color: var(--ink);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all var(--transition-fast);
+    }
+    
+    button:hover {
+      background: var(--surface-hover);
+      border-color: var(--btn-hover-border);
+    }
+    
+    button.primary {
+      background: var(--blue);
+      color: #ffffff;
+      border-color: var(--blue);
+    }
+    
+    button.primary:hover {
+      background: hsl(var(--hue-blue), 90%, 48%);
+      border-color: hsl(var(--hue-blue), 90%, 48%);
+      box-shadow: 0 4px 10px rgba(59, 130, 246, 0.25);
+    }
+    
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    nav, .toolbar, #status-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    nav button {
+      background: var(--surface-subtle);
+      border-color: transparent;
+      color: var(--muted);
+      font-weight: 600;
+      padding: 0 12px;
+      height: 32px;
+    }
+    
+    nav button[aria-pressed="true"] {
+      background: var(--strong-bg);
+      color: #ffffff;
+    }
+
+    nav button[aria-pressed="true"]:hover {
+      background: var(--nav-pressed-hover-bg);
+    }
+    
+    #status-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    #status-bar > span {
+      padding: 6px 12px;
+      border-radius: 20px;
+      background: var(--status-ok-bg);
+      border: 1px solid var(--status-ok-border);
+      font-weight: 600;
+      color: var(--green);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    #status-bar[data-state="busy"] > span {
+      background: var(--status-busy-bg);
+      border-color: var(--status-busy-border);
+      color: var(--blue);
+    }
+
+    #status-bar[data-state="error"] > span {
+      background: var(--status-err-bg);
+      border-color: var(--status-err-border);
+      color: var(--red);
+    }
+    
+    main {
+      padding-bottom: 24px;
+    }
+    
+    .panes {
+      display: flex;
+      gap: var(--space-2);
+      overflow-x: auto;
+      padding: var(--space-2);
+      align-items: flex-start;
+      height: calc(100vh - 75px);
+    }
+    
+    /* Scrollbar styling */
+    .panes::-webkit-scrollbar {
+      height: 10px;
+    }
+    .panes::-webkit-scrollbar-track {
+      background: var(--scrollbar-track);
+      border-radius: 10px;
+    }
+    .panes::-webkit-scrollbar-thumb {
+      background: var(--scrollbar-thumb);
+      border-radius: 10px;
+    }
+    .panes::-webkit-scrollbar-thumb:hover {
+      background: var(--scrollbar-thumb-hover);
+    }
+    
+    .pane {
+      min-width: 290px;
+      width: min(330px, 86vw);
+      max-width: 330px;
+      flex: 0 0 auto;
+      background: var(--pane-bg);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--border-radius-pane);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      flex-direction: column;
+      max-height: 100%;
+    }
+    
+    .pane-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: var(--space-1) var(--space-2);
+      background: var(--strong-bg);
+      color: #ffffff;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    
+    .pane-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+    
+    .pane-header-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .pane-close {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      min-width: 22px;
+      height: 22px;
+      padding: 0;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.8);
+      font-size: 12px;
+      line-height: 1;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    
+    .pane-close:hover {
+      background: rgba(255,255,255,0.25);
+      color: #ffffff;
+    }
+    
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 6px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    
+    .quick-add {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      padding: var(--space-1);
+      background: var(--quick-add-overlay);
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    .quick-add input {
+      border: 1px dashed var(--line);
+      background: var(--card-bg);
+      height: 32px;
+      border-radius: 6px;
+      padding: 0 10px;
+      font-size: 12px;
+    }
+    
+    .quick-add input:focus {
+      border-style: solid;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+    }
+    
+    .quick-add button {
+      min-height: 32px;
+      height: 32px;
+      width: 32px;
+      padding: 0;
+      border-radius: 6px;
+    }
+
+    .epic-new-toggle {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      width: 100%;
+      padding: var(--space-1);
+      background: var(--quick-add-overlay);
+      border: none;
+      border-bottom: 1px solid var(--border-soft);
+      color: var(--blue);
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .epic-composer {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: var(--space-1);
+      background: var(--quick-add-overlay);
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    .epic-composer input,
+    .epic-composer select {
+      border: 1px dashed var(--line);
+      background: var(--card-bg);
+      color: var(--ink);
+      height: 30px;
+      border-radius: 6px;
+      padding: 0 8px;
+      font-size: 12px;
+    }
+
+    .epic-composer input:focus,
+    .epic-composer select:focus {
+      border-style: solid;
+      border-color: var(--blue);
+    }
+
+    .epic-composer-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .epic-composer-actions button {
+      height: 28px;
+      padding: 0 10px;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+
+    .epic-composer-error {
+      color: var(--red);
+      font-size: 11px;
+    }
+
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-half);
+      padding: var(--space-1);
+      overflow-y: auto;
+      flex: 1 1 auto;
+      min-height: 100px;
+    }
+    
+    .task-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-soft-90);
+      border-left: 4px solid var(--muted);
+      border-radius: var(--border-radius-card);
+      padding: 0;
+      transition: box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+      position: relative;
+      cursor: grab;
+    }
+    
+    .task-card:hover {
+      border-color: var(--task-hover-border);
+    }
+    
+    .task-card.selected {
+      background: var(--surface-hover);
+      border-color: var(--focus-ring);
+      box-shadow: 0 0 0 1px var(--focus-ring);
+    }
+
+    /* Pointer-drag states: the lifted card rides the cursor while a gap
+       placeholder marks where it will land. */
+    body.dragging-now {
+      user-select: none;
+      cursor: grabbing;
+    }
+
+    .task-card.lifted {
+      position: fixed;
+      z-index: 50;
+      margin: 0;
+      pointer-events: none;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.22), 0 3px 8px rgba(0,0,0,0.14);
+      will-change: transform;
+    }
+
+    .gap {
+      border-radius: var(--border-radius-card);
+      background: var(--gap-bg);
+      border: 1px dashed var(--gap-line);
+      flex: 0 0 auto;
+    }
+
+    /* Dropping a story here assigns the epic rather than inserting a row. */
+    .epic-row.epic-drop-hover {
+      background: var(--gap-bg);
+      box-shadow: 0 0 0 2px var(--focus-ring);
+    }
+
+    @keyframes settle {
+      0% { box-shadow: 0 0 0 2px var(--gap-line); }
+      100% { box-shadow: 0 0 0 2px transparent; }
+    }
+
+    .task-card.settled {
+      animation: settle 0.45s ease-out;
+    }
+
+    @keyframes saved-flash {
+      0% { background-color: var(--saved-wash); }
+      100% { background-color: transparent; }
+    }
+
+    .task-card.saved-flash {
+      animation: saved-flash 0.6s ease-out;
+    }
+    
+    .task-card[data-status="In progress"] { border-left-color: var(--blue); background-color: var(--card-doing-bg); }
+    .task-card[data-status="Done"] { border-left-color: var(--green); background-color: var(--card-done-bg); }
+    .task-card[data-status="On schedule"] { border-left-color: var(--muted); }
+    .task-card[data-status="My backlog"] { border-left-color: var(--purple); }
+    
+    .task-row {
+      display: flex;
+      align-items: center;
+      min-height: var(--space-4);
+      padding-right: var(--space-1);
+    }
+
+    .task-card.selected .task-row {
+      height: auto;
+      min-height: var(--space-4);
+    }
+
+    .drag-handle {
+      width: var(--space-2);
+      align-self: stretch;
+      background-color: rgba(128, 128, 128, 0.05);
+      cursor: grab;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 10px;
+      border-right: 1px solid rgba(128, 128, 128, 0.2);
+    }
+
+    .drag-handle:hover {
+      background-color: rgba(128, 128, 128, 0.1);
+    }
+
+    .story-type {
+      width: var(--space-3);
+      text-align: center;
+      font-size: 14px;
+    }
+    
+    .row-meta {
+      display: flex;
+      gap: var(--space-half);
+      align-items: center;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .note-badge {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--muted);
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-soft-50);
+      border-radius: 20px;
+      padding: 2px 7px;
+      white-space: nowrap;
+      align-self: center;
+    }
+
+    .quick-note-btn {
+      width: 24px;
+      min-width: 24px;
+      height: 24px;
+      padding: 0;
+      border-radius: 4px;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      opacity: 0;
+      transition: opacity var(--transition-fast), background var(--transition-fast);
+    }
+
+    .task-card:hover .quick-note-btn,
+    .task-card.selected .quick-note-btn {
+      opacity: 1;
+    }
+
+    .quick-note-btn:hover {
+      background: rgba(0,0,0,0.05);
+      color: var(--ink);
+    }
+    
+    .task-text {
+      flex: 1;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.4;
+      font-size: 13px;
+      cursor: pointer;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
+      padding: 0 var(--space-1);
+    }
+
+    .task-card.selected .task-text {
+      display: block;
+      -webkit-line-clamp: unset;
+      white-space: normal;
+    }
+    
+    .task-text code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      background: var(--surface-subtle);
+      color: var(--code-text);
+      border-radius: 4px;
+      padding: 2px 4px;
+    }
+
+    .story-menu {
+      width: 24px;
+      min-width: 24px;
+      height: 24px;
+      padding: 0;
+      border-radius: 4px;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      transition: background var(--transition-fast);
+    }
+    
+    .story-menu:hover {
+      background: rgba(0,0,0,0.05);
+      color: var(--ink);
+    }
+    
+    .tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    
+    .tag, .epic-chip {
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+    }
+    
+    .tag.secondary {
+      background: var(--surface-subtle);
+      color: var(--muted);
+      border: 1px solid var(--border-soft-50);
+    }
+    
+    .epic-chip {
+      color: #ffffff;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      transition: transform var(--transition-fast);
+    }
+    
+    .epic-chip:hover {
+      transform: scale(1.05);
+    }
+    
+    .card-expanded {
+      display: none;
+      padding: var(--space-1) var(--space-2);
+      border-top: 1px solid var(--border-soft);
+      background: rgba(0, 0, 0, 0.05);
+      margin: var(--space-1) 0 0 0;
+    }
+    
+    .task-card.selected .card-expanded {
+      display: block;
+    }
+    
+    .card-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    
+    .card-actions button, .card-actions select {
+      height: 28px;
+      min-height: 28px;
+      font-size: 11px;
+      padding: 0 8px;
+      border-radius: 6px;
+    }
+    
+    .compact-status-select {
+      max-width: 90px;
+      background: var(--surface-hover);
+    }
+
+    /* Launch split button + agent popover (prototype-launch-final) */
+    .launch-split {
+      display: inline-flex;
+      position: relative;
+    }
+
+    .launch-split .launch-main,
+    .launch-split .launch-caret {
+      color: #fff;
+      font-weight: 600;
+      border: 1px solid var(--blue);
+      background: var(--blue);
+    }
+
+    .launch-split .launch-main { border-radius: 6px 0 0 6px; }
+
+    .launch-split .launch-caret {
+      border-radius: 0 6px 6px 0;
+      border-left: 1px solid rgba(255, 255, 255, 0.35);
+      padding: 0 7px;
+    }
+
+    .launch-split.agent-claude .launch-main,
+    .launch-split.agent-claude .launch-caret {
+      background: var(--orange);
+      border-color: var(--orange);
+    }
+
+    .launch-pop {
+      position: absolute;
+      top: 32px;
+      left: 0;
+      z-index: 30;
+      width: min(300px, 84vw);
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow-lg), 0 10px 24px rgba(0, 0, 0, 0.16);
+      padding: 4px;
+      text-align: left;
+    }
+
+    .launch-pop .launch-pop-item {
+      padding: 8px;
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      cursor: pointer;
+    }
+
+    .launch-pop .launch-pop-item:hover { background: var(--surface-hover); }
+
+    .launch-pop .launch-pop-name {
+      font-weight: 600;
+      font-size: 12px;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .launch-pop .launch-pop-hint {
+      font-size: 10px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .launch-pop .launch-pop-default {
+      margin-left: auto;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--green);
+      text-transform: uppercase;
+    }
+
+    .launch-pop .launch-pop-divider { border-top: 1px solid var(--line); margin: 4px 6px; }
+
+    .launch-pop .launch-pop-footer {
+      padding: 6px 8px;
+      font-size: 10px;
+      color: var(--muted);
+      cursor: pointer;
+      border-radius: 6px;
+    }
+
+    .launch-pop .launch-pop-footer:hover { background: var(--surface-hover); color: var(--ink); }
+
+    .agent-badge {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 4px;
+      flex: none;
+    }
+
+    .agent-badge.agent-badge-codex { color: var(--blue); border: 1px solid var(--blue); }
+    .agent-badge.agent-badge-claude { color: var(--orange); border: 1px solid var(--orange); }
+
+    /* Header preferences menu */
+    .prefs-wrap, .data-wrap { position: relative; }
+
+    #prefs-toggle, #data-toggle {
+      border: 1px solid var(--line);
+      background: var(--card-bg);
+      border-radius: 6px;
+      height: 26px;
+      padding: 0 8px;
+      cursor: pointer;
+      color: var(--ink);
+    }
+
+    #prefs-menu, #data-menu {
+      position: absolute;
+      top: 32px;
+      right: 0;
+      z-index: 40;
+      width: 250px;
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow-lg), 0 10px 24px rgba(0, 0, 0, 0.16);
+      padding: 10px 12px;
+    }
+
+    #prefs-menu h3, #data-menu h3 {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 8px;
+    }
+
+    #prefs-menu .prefs-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 0;
+      font-size: 12px;
+      cursor: pointer;
+      color: var(--ink);
+    }
+
+    #prefs-menu .prefs-row input { margin: 0; }
+
+    #data-menu {
+      width: 230px;
+    }
+
+    #data-menu .data-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 4px;
+      margin: 0 -4px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      color: var(--ink);
+      background: none;
+      border: none;
+      width: 100%;
+      text-align: left;
+      height: auto;
+    }
+
+    #data-menu .data-row:hover { background: var(--surface-subtle); }
+    #data-menu .data-row .row-icon { width: 16px; text-align: center; color: var(--muted); }
+    #data-menu .data-row .row-label { flex: 1; }
+
+    #data-menu .data-divider {
+      height: 1px;
+      background: var(--border-soft);
+      margin: 8px 0;
+    }
+
+    #data-status {
+      font-size: 10.5px;
+      color: var(--muted);
+      padding: 0 4px;
+    }
+
+    /* Field stack (prototype-13): labeled fields inside the expanded card */
+    .field-stack {
+      display: grid;
+      gap: var(--space-1);
+      margin-bottom: var(--space-1);
+    }
+
+    .field-stack label {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+
+    .field-stack input[type="text"],
+    .field-stack select {
+      width: 100%;
+      max-width: none;
+      height: 28px;
+      font-size: 12px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      background: var(--card-bg);
+      color: var(--ink);
+      padding: 0 8px;
+      box-shadow: none;
+      outline: none;
+    }
+
+    .field-stack input[type="text"]:focus,
+    .field-stack select:focus {
+      border-color: var(--focus-ring);
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-1);
+    }
+
+    .save-state {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--green);
+      text-align: right;
+    }
+    
+    .epic-picker {
+      max-width: 110px;
+      background: var(--surface-hover);
+    }
+    
+    .compact-editor {
+      width: 100%;
+      padding: 5px 7px;
+      border-radius: 4px;
+      border: 1px solid var(--blue);
+      font-size: 12px;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .inline-edit-wrap {
+      position: relative;
+    }
+
+    .task-text.editing {
+      display: block;
+      -webkit-line-clamp: unset;
+      white-space: pre-wrap;
+      overflow: visible;
+      min-width: 0; /* keep flex min-content from widening the node vs display mode */
+      overflow-wrap: normal; /* UA gives [contenteditable] break-word; keep display-mode wrap points */
+      word-break: normal;
+      cursor: text;
+      outline: none;
+      border-radius: 4px;
+      box-shadow: 0 0 0 1.5px var(--blue);
+      background: color-mix(in srgb, var(--blue) 6%, var(--card-bg));
+    }
+
+    .task-row .inline-edit-wrap {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .tag-autocomplete {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 100%;
+      margin-top: 2px;
+      background: var(--tag-autocomplete-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      z-index: 5;
+    }
+
+    .tag-autocomplete > div {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 8px;
+      font-size: 11px;
+      cursor: pointer;
+    }
+
+    .tag-autocomplete > div .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .tag-autocomplete > div:hover,
+    .tag-autocomplete > div.selected {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    /* Notes UI */
+    .story-notes-thread {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border-soft);
+      display: grid;
+      gap: 8px;
+    }
+    
+    .story-notes-thread[hidden] {
+      display: none;
+    }
+    
+    .story-notes-list {
+      display: grid;
+      gap: 6px;
+      max-height: 180px;
+      overflow-y: auto;
+    }
+    
+    .story-note {
+      padding: 6px 8px;
+      border-left: 3px solid var(--purple);
+      background: var(--surface-hover);
+      border-radius: 0 6px 6px 0;
+      line-height: 1.4;
+      font-size: 12px;
+    }
+
+    .story-note a {
+      color: var(--purple);
+      text-decoration: underline;
+    }
+    
+    .story-note-time {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+    
+    .story-note-form {
+      display: grid;
+      gap: 6px;
+    }
+    
+    .story-note-form textarea {
+      width: 100%;
+      min-height: 48px;
+      padding: 6px;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+      font-size: 12px;
+      resize: vertical;
+      outline: none;
+    }
+    
+    .story-note-form textarea:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 2px rgba(175, 82, 222, 0.1);
+    }
+    
+    .story-note-form button {
+      justify-self: end;
+      height: 28px;
+    }
+    
+    .story-note-state {
+      color: var(--muted);
+      font-size: 11px;
+      text-align: center;
+      padding: 4px;
+    }
+    
+    /* Epics pane */
+    .epic-row {
+      display: grid;
+      grid-template-columns: 14px minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: start;
+      text-align: left;
+      width: 100%;
+      padding: 10px 12px;
+    }
+    
+    .epic-row button {
+      border: none;
+      background: transparent;
+      padding: 0;
+      color: inherit;
+      text-align: left;
+      font-weight: 700;
+      cursor: pointer;
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    
+    .epic-row button:hover strong {
+      color: var(--blue);
+    }
+    
+    .epic-bar {
+      width: 100%;
+      height: 4px;
+      border-radius: 4px;
+      background: var(--track-bg);
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .epic-bar span {
+      display: block;
+      height: 100%;
+      background: var(--green);
+    }
+
+    .epic-done-footer {
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-size: 11px;
+      padding: 2px 12px 8px;
+      text-align: left;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .epic-done-footer:hover {
+      color: var(--blue);
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    
+    .empty {
+      color: var(--muted);
+      text-align: center;
+      padding: 24px 12px;
+    }
+    
+    /* Epic detail pane overrides */
+    .epic-story-pane {
+      background: var(--surface-alt);
+      border-left: 2px solid rgba(59, 130, 246, 0.2);
+    }
+
+    .focus-pane {
+      width: min(720px, 100%);
+      max-width: 720px;
+      flex: 0 1 720px;
+      margin-inline: auto;
+    }
+
+    #pane-toggles.focus-only {
+      display: flex;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    #pane-toggles .focus-epic-toggle {
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
+    .epic-story-group-label {
+      padding: 8px 14px;
+      background: var(--surface-subtle);
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border-soft);
+    }
+    
+    .epic-story-metadata {
+      background: var(--card-bg);
+      border-top: 1px solid var(--border-soft);
+      border-bottom: 1px solid var(--border-soft);
+    }
+    
+    .epic-story-metadata summary {
+      padding: 10px 14px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      outline: none;
+    }
+    
+    .epic-detail-metadata {
+      padding: 10px 14px 14px 14px;
+      display: grid;
+      gap: 6px;
+      font-size: 11px;
+    }
+    
+    .epic-detail-metadata div {
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .epic-detail-metadata span {
+      color: var(--muted);
+    }
+    
+    .epic-detail-metadata strong {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--ink);
+    }
+    
+    .epic-detail-activity {
+      padding: 12px 14px;
+      background: var(--surface-hover);
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: var(--shadow-sm); }
+      35% { box-shadow: 0 0 0 4px rgba(52,199,89,.26), 0 0 0 9px rgba(52,199,89,.14); }
+    }
+    .highlight { animation: pulse 2.25s ease-in-out 2; }
+
+    /* Menu button is mobile-only; hidden on desktop. */
+    #mobile-menu { display: none; }
+
+    @media (max-width: 760px) {
+      /* --- Compact header: one control row + a swipe-tab strip --- */
+      header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        row-gap: 10px;
+        height: auto;
+        padding: 10px 12px;
+      }
+      .logo { order: 1; font-size: 20px; }
+      #global-search { order: 2; flex: 1 1 auto; min-width: 0; height: 38px; }
+      #mobile-menu {
+        order: 3;
+        display: inline-flex;
+        width: 42px;
+        min-width: 42px;
+        height: 38px;
+        font-size: 17px;
+      }
+
+      /* Directory filter is unused on mobile. */
+      #dir-filter-wrap { display: none; }
+
+      /* Lane buttons become a horizontally-scrollable tab strip (row 2). */
+      #pane-toggles {
+        order: 4;
+        flex: 1 1 100%;
+        width: 100%;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        gap: 6px;
+        padding-bottom: 2px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      #pane-toggles::-webkit-scrollbar { display: none; }
+      #pane-toggles button { flex: 0 0 auto; height: 34px; padding: 0 15px; }
+      /* On mobile the pressed (visibility) state is irrelevant; only the
+         in-view pane is highlighted via .is-active. */
+      #pane-toggles button[aria-pressed="true"] {
+        background: var(--surface-subtle);
+        color: var(--muted);
+      }
+      #pane-toggles button.is-active {
+        background: var(--strong-bg);
+        color: #ffffff;
+      }
+
+      /* Secondary controls live behind the ☰ menu (revealed as row 3). */
+      #portfolio-filter-wrap,
+      #epic-filter-wrap,
+      #status-bar,
+      .portfolio-link,
+      #theme-toggle,
+      .data-wrap,
+      .prefs-wrap { display: none; }
+      header.menu-open #portfolio-filter-wrap,
+      header.menu-open #epic-filter-wrap,
+      header.menu-open #status-bar,
+      header.menu-open .portfolio-link,
+      header.menu-open #theme-toggle,
+      header.menu-open .data-wrap,
+      header.menu-open .prefs-wrap {
+        display: flex;
+        order: 5;
+        flex: 1 1 100%;
+        align-items: center;
+      }
+      header.menu-open #portfolio-filter-wrap select,
+      header.menu-open #epic-filter-wrap select { width: 100%; }
+
+      /* --- Board becomes a one-pane-at-a-time swipe carousel --- */
+      .panes {
+        height: calc(100dvh - 104px);
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        gap: 10px;
+        padding: 10px;
+      }
+      .pane {
+        flex: 0 0 100%;
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        scroll-snap-align: start;
+      }
+      /* No per-pane close on mobile — panes are paged, not dismissed. */
+      .pane-close { display: none; }
+    }
+
+    #theme-toggle {
+      width: 34px;
+      min-width: 34px;
+      padding: 0;
+      font-size: 15px;
+    }
+
+    .portfolio-link {
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 12.5px;
+      white-space: nowrap;
+    }
+    .portfolio-link:hover {
+      color: var(--ink);
+    }
+
+    #new-here-banner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 20px;
+      background: linear-gradient(90deg, hsla(var(--hue-blue), 90%, 55%, 0.10), hsla(var(--hue-purple), 76%, 58%, 0.10));
+      border-bottom: 1px solid var(--border-soft);
+      font-size: 12.5px;
+    }
+    #new-here-banner[hidden] { display: none; }
+    #new-here-banner .banner-icon {
+      flex: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+    #new-here-banner .banner-text {
+      flex: 1;
+      min-width: 0;
+      color: var(--ink);
+    }
+    #new-here-banner .banner-text strong { font-weight: 700; }
+    #new-here-banner .banner-text span.sub { color: var(--muted); }
+    #new-here-banner .banner-cta {
+      flex: none;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      height: 26px;
+      padding: 0 12px;
+      border-radius: 6px;
+      border: none;
+      background: var(--strong-bg);
+      color: #fff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    #new-here-banner .banner-cta:hover { opacity: 0.88; }
+    #new-here-banner .banner-dismiss {
+      flex: none;
+      width: 22px;
+      height: 22px;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 5px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #new-here-banner .banner-dismiss:hover { background: var(--surface-subtle); color: var(--ink); }
+
+    @media (max-width: 720px) {
+      #new-here-banner .banner-text span.sub { display: none; }
+    }
+  </style>
+  <script>
+    (function () {
+      if (localStorage.getItem("pivotalTheme") === "dark") {
+        document.documentElement.setAttribute("data-theme", "dark");
+      }
+    })();
+  </script>
+</head>
+<body>
+  <header>
+    <span class="logo">Pivotal</span>
+    <input id="global-search" type="search" placeholder="Search">
+    <button id="mobile-menu" type="button" aria-label="More controls" aria-expanded="false" title="More controls">☰</button>
+    <div class="epic-filter-wrap" id="portfolio-filter-wrap">
+      <select id="portfolio-filter" data-testid="portfolio-filter" aria-label="Portfolio filter"></select>
+    </div>
+    <div class="epic-filter-wrap" id="epic-filter-wrap">
+      <select id="epic-filter" data-testid="epic-filter" aria-label="Epic filter"></select>
+    </div>
+    <div class="epic-filter-wrap" id="dir-filter-wrap">
+      <select id="dir-filter" data-testid="dir-filter" aria-label="Directory filter"></select>
+    </div>
+    <nav id="pane-toggles" aria-label="Panes" data-testid="pane-toggles"></nav>
+    <div id="status-bar" data-testid="sync-status"></div>
+    <a class="portfolio-link" href="/welcome" title="New here? Start with the intro page">New here?</a>
+    <a class="portfolio-link" href="/portfolio" title="Portfolios">Portfolios</a>
+    <a class="portfolio-link" href="/sessions_history" title="Sessions">Sessions</a>
+    <button id="theme-toggle" type="button" aria-pressed="false" title="Toggle dark mode" data-testid="theme-toggle">🌙</button>
+    <div class="data-wrap">
+      <button id="data-toggle" type="button" title="Backup &amp; restore" aria-expanded="false" data-testid="data-toggle">💾</button>
+      <div id="data-menu" data-testid="data-menu" hidden>
+        <h3>Backup &amp; Restore</h3>
+        <button type="button" class="data-row" id="export-backup"><span class="row-icon">⬇</span><span class="row-label">Export backup</span></button>
+        <button type="button" class="data-row" id="import-backup"><span class="row-icon">⬆</span><span class="row-label">Import backup&hellip;</span></button>
+        <input type="file" id="import-file-input" accept=".zip" hidden>
+        <div class="data-divider"></div>
+        <div id="data-status">Ready</div>
+      </div>
+    </div>
+    <div class="prefs-wrap">
+      <button id="prefs-toggle" type="button" title="Preferences" aria-expanded="false" data-testid="prefs-toggle">⚙</button>
+      <div id="prefs-menu" data-testid="prefs-menu" hidden>
+        <h3>Preferences</h3>
+        <label class="prefs-row"><input type="radio" name="default-agent" value="codex"><span class="agent-badge agent-badge-codex">CX</span> Codex</label>
+        <label class="prefs-row"><input type="radio" name="default-agent" value="claude"><span class="agent-badge agent-badge-claude">CC</span> Claude Code</label>
+      </div>
+    </div>
+  </header>
+  <div id="new-here-banner" hidden>
+    <span class="banner-icon">✨</span>
+    <span class="banner-text">
+      <strong>New here?</strong>
+      <span class="sub">See how this board works with your AI agent — 2 min read.</span>
+    </span>
+    <a class="banner-cta" href="/welcome">Take the tour</a>
+    <button type="button" class="banner-dismiss" id="dismiss-banner" title="Dismiss" aria-label="Dismiss">✕</button>
+  </div>
+  <main>
+    <section id="panes" class="panes" aria-label="Kanban board" data-testid="kanban-board"></section>
+  </main>
+
+  <script src="/todo_data.js" data-todo-data></script>
+  <script src="pivotalState.js"></script>
+  <script src="pivotalUtils.js"></script>
+  <script src="focusLogic.js"></script>
+  <script src="iceboxLogic.js"></script>
+  <script src="pivotalData.js"></script>
+  <script src="pivotalEdit.js"></script>
+  <script src="pivotalDND.js"></script>
+  <script src="storyNotes.js"></script>
+  <script src="codexLaunch.js"></script>
+  <script src="syncLogic.js"></script>
+  <script src="syncReceipt.js"></script>
+  <script src="pivotalSyncUI.js"></script>
+  <script src="pivotalSyncStream.js"></script>
+  <script>
+    (function () {
+      const btn = document.getElementById("theme-toggle");
+      function applyTheme(theme) {
+        if (theme === "dark") {
+          document.documentElement.setAttribute("data-theme", "dark");
+          btn.setAttribute("aria-pressed", "true");
+          btn.textContent = "☀️";
+        } else {
+          document.documentElement.removeAttribute("data-theme");
+          btn.setAttribute("aria-pressed", "false");
+          btn.textContent = "🌙";
+        }
+      }
+      applyTheme(localStorage.getItem("pivotalTheme") === "dark" ? "dark" : "light");
+      btn.addEventListener("click", function () {
+        const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        localStorage.setItem("pivotalTheme", next);
+        applyTheme(next);
+      });
+    })();
+  </script>
+  <script>
+    (function () {
+      const PS = PivotalState.ps;
+      const panesEl = document.getElementById("panes");
+      const searchEl = document.getElementById("global-search");
+      const portfolioFilterEl = document.getElementById("portfolio-filter");
+      const epicFilterEl = document.getElementById("epic-filter");
+      const dirFilterEl = document.getElementById("dir-filter");
+      const togglesEl = document.getElementById("pane-toggles");
+      let cardSelectionTimer = null;
+      const epicFromUrl = new URLSearchParams(window.location.search).get("epic");
+      PS.selectedEpic = epicFromUrl || PS.selectedEpic || "all";
+      const dirFromUrl = new URLSearchParams(window.location.search).get("dir");
+      PS.selectedDir = dirFromUrl || PS.selectedDir || "all";
+      const portfolioFromUrl = new URLSearchParams(window.location.search).get("portfolio");
+      PS.selectedPortfolio = portfolioFromUrl || PS.selectedPortfolio || "all";
+
+      function portfolioData() {
+        return window.todoData.portfolio_data || {};
+      }
+
+      function dirLabel(dir) {
+        return dir.split("/").filter(Boolean).pop() || dir;
+      }
+
+      const AGENT_LABELS = { codex: "Codex", claude: "Claude" };
+
+      function getDefaultAgent() {
+        return localStorage.getItem("pivotalDefaultAgent") === "claude" ? "claude" : "codex";
+      }
+
+      function agentBadge(provider) {
+        const badge = document.createElement("span");
+        badge.className = `agent-badge agent-badge-${provider}`;
+        badge.textContent = provider === "claude" ? "CC" : "CX";
+        return badge;
+      }
+
+      function sessionAge(iso) {
+        const then = Date.parse(iso);
+        if (!Number.isFinite(then)) return "";
+        const seconds = Math.max(0, (Date.now() - then) / 1000);
+        if (seconds < 3600) return `${Math.max(1, Math.floor(seconds / 60))}m ago`;
+        if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+        return `${Math.floor(seconds / 86400)}d ago`;
+      }
+
+      function lastSessionFor(task) {
+        const entry = (window.todoData.story_sessions || {})[task.task_id];
+        const sessions = entry && Array.isArray(entry.sessions) ? entry.sessions : [];
+        return sessions.find((item) => item && item.session_id && item.provider) || null;
+      }
+
+      async function resumeSession(task, session, nameEl) {
+        const epicMeta = window.todoData.epic_meta || {};
+        const epicDir = (task.tags || []).map((tag) => (epicMeta[tag] || {}).dir).find(Boolean);
+        nameEl.textContent = "↻ Opening…";
+        try {
+          const response = await fetch("/api/sessions/resume", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              provider: session.provider,
+              session_id: session.session_id,
+              cwd: session.cwd || epicDir || ""
+            })
+          });
+          const body = await response.json();
+          if (!response.ok) throw new Error(body.error || "Could not resume session");
+          nameEl.textContent = "↻ Opened in Terminal";
+        } catch (error) {
+          nameEl.textContent = `↻ Resume failed: ${error.message}`;
+        }
+      }
+
+      function taskWithEffectiveTags(task, tagOverrides) {
+        return {
+          ...task,
+          tags: Array.from(new Set([...(task.tags || []), ...(tagOverrides[task.task_id] || [])])),
+          children: (task.children || []).map((child) => taskWithEffectiveTags(child, tagOverrides))
+        };
+      }
+
+      function tasksWithEffectiveTags(tasks, tagOverrides) {
+        return (tasks || []).map((task) => taskWithEffectiveTags(task, tagOverrides));
+      }
+
+      function visibleTasksForPane(pane, statusOverrides, textOverrides, tagOverrides) {
+        const all = PivotalData.getAllFlat(window.todoData.tasks || []);
+        if (pane.id === "epics") return [];
+        return all.filter((task) => {
+          const effectiveStatus = FocusLogic.getEffectiveStatus(task, statusOverrides);
+          const effectiveTask = taskWithEffectiveTags(task, tagOverrides);
+          return effectiveStatus === pane.status
+            && PivotalData.taskMatches(task, PS.query, textOverrides)
+            && PivotalData.taskMatchesEpicFilter(effectiveTask, PS.selectedEpic, window.todoData.epic_meta || {})
+            && PivotalData.taskMatchesDirFilter(effectiveTask, PS.selectedDir, window.todoData.epic_meta || {})
+            && PivotalData.taskMatchesPortfolioFilter(effectiveTask, PS.selectedPortfolio, window.todoData.epic_meta || {}, portfolioData());
+        });
+      }
+
+      function renderToggles() {
+        togglesEl.innerHTML = "";
+        togglesEl.classList.toggle("focus-only", Boolean(PS.focusEpic));
+        if (PS.focusEpic) {
+          const button = document.createElement("button");
+          button.className = "focus-epic-toggle";
+          button.textContent = `#${PS.focusEpic}`;
+          button.dataset.paneId = "focus";
+          button.setAttribute("aria-pressed", "true");
+          button.title = `Focused on #${PS.focusEpic}`;
+          button.addEventListener("click", () => scrollToPane("focus"));
+          togglesEl.appendChild(button);
+          if (mobileMQ.matches) updateActiveTab();
+          return;
+        }
+        PivotalState.paneDefs.forEach((pane) => {
+          const button = document.createElement("button");
+          button.textContent = pane.label;
+          button.dataset.paneId = pane.id;
+          button.setAttribute("aria-pressed", String(PS.paneVisibility[pane.id] !== false));
+          button.addEventListener("click", () => {
+            // On mobile the strip is a pager: tap scrolls the pane into view
+            // instead of toggling its visibility.
+            if (mobileMQ.matches) {
+              scrollToPane(pane.id);
+              return;
+            }
+            PS.paneVisibility[pane.id] = PS.paneVisibility[pane.id] === false;
+            PivotalState.savePaneVisibility(PS.paneVisibility);
+            render();
+          });
+          togglesEl.appendChild(button);
+        });
+        if (mobileMQ.matches) updateActiveTab();
+      }
+
+      function closePane(paneId) {
+        if (paneId.startsWith("epic-")) {
+          closeEpicDetailPane(paneId.replace(/^epic-/, ""));
+          return;
+        }
+        PS.paneVisibility[paneId] = false;
+        PivotalState.savePaneVisibility(PS.paneVisibility);
+        render();
+      }
+
+      function renderPaneHeader(pane, count, onClose) {
+        const header = document.createElement("div");
+        header.className = "pane-header";
+        const title = document.createElement("span");
+        title.className = "pane-title";
+        title.textContent = pane.label;
+        const actions = document.createElement("span");
+        actions.className = "pane-header-actions";
+        const badge = document.createElement("span");
+        badge.className = "badge";
+        badge.textContent = count;
+        const closeButton = document.createElement("button");
+        closeButton.type = "button";
+        closeButton.className = "pane-close";
+        closeButton.dataset.testid = "pane-close";
+        closeButton.setAttribute("aria-label", `Close ${pane.label} pane`);
+        closeButton.title = `Close ${pane.label} pane`;
+        closeButton.textContent = "x";
+        closeButton.addEventListener("click", () => onClose ? onClose() : closePane(pane.id));
+        actions.append(badge, closeButton);
+        header.append(title, actions);
+        return header;
+      }
+
+      function openEpicPane(tag) {
+        FocusLogic.openEpicPane(tag);
+        render();
+        requestAnimationFrame(() => {
+          const target = panesEl.querySelector(`[data-testid="epic-detail-pane"][data-epic="${tag}"]`);
+          if (target) panesEl.scrollTo({ left: Math.max(0, target.offsetLeft - 12), behavior: "smooth" });
+        });
+      }
+
+      function closeEpicDetailPane(tag) {
+        FocusLogic.closeEpicPane(tag);
+        render();
+      }
+
+      function effectiveEpicTasks(tag, statusOverrides, textOverrides, tagOverrides) {
+        const epicMeta = window.todoData.epic_meta || {};
+        return PivotalData.getAllFlat(window.todoData.tasks || [])
+          .filter((task) => PivotalData.taskMatchesEpicFilter(taskWithEffectiveTags(task, tagOverrides), tag, epicMeta))
+          .sort((a, b) => {
+            const aDone = FocusLogic.getEffectiveStatus(a, statusOverrides) === "Done";
+            const bDone = FocusLogic.getEffectiveStatus(b, statusOverrides) === "Done";
+            if (aDone !== bDone) return aDone ? 1 : -1;
+            return 0; // stable sort: preserve source (file) order so new stories stay on top
+          });
+      }
+
+      function epicStatusCounts(tasks, statusOverrides, queuedCount) {
+        const counts = { Pending: queuedCount || 0, "In progress": 0, Done: 0, "On schedule": 0 };
+        tasks.forEach((task) => {
+          const status = FocusLogic.getEffectiveStatus(task, statusOverrides);
+          counts[status] = (counts[status] || 0) + 1;
+        });
+        return counts;
+      }
+
+      // Surfaces the digit key each portfolio answers to — there is no shortcuts panel,
+      // so the dropdown is where the bindings are discoverable.
+      function shortcutPrefix(key) {
+        return key ? `[${key}] ` : "";
+      }
+
+      function renderPortfolioFilter(tagOverrides) {
+        const epicMeta = window.todoData.epic_meta || {};
+        const data = portfolioData();
+        const counts = PivotalData.countTasksByPortfolio(tasksWithEffectiveTags(window.todoData.tasks || [], tagOverrides), epicMeta, data);
+        const items = PivotalData.getActivePortfolios(data);
+        // An archived portfolio is hidden from the list, but stays selectable if it is
+        // already the scope — otherwise a ?portfolio=<archived id> link would silently
+        // snap back to "all".
+        const selectedArchived = PivotalData.getPortfolios(data).find(
+          (item) => item.archived && item.id === PS.selectedPortfolio
+        );
+        const values = ["all", ...items.map((item) => item.id), "__unassigned"]
+          .concat(selectedArchived ? [selectedArchived.id] : []);
+
+        portfolioFilterEl.innerHTML = "";
+        const appendOption = (parent, value, label) => {
+          const el = document.createElement("option");
+          el.value = value;
+          el.textContent = label;
+          parent.appendChild(el);
+        };
+        appendOption(portfolioFilterEl, "all", `${shortcutPrefix("0")}All portfolios (${counts.all || 0})`);
+        [
+          { label: "In focus", entries: items.filter((item) => item.focus), keys: true },
+          { label: "Other", entries: items.filter((item) => !item.focus), keys: true },
+          // An archived portfolio keeps its digit reserved but the key is inert, so
+          // advertising it here would be a lie.
+          { label: "Archived", entries: selectedArchived ? [selectedArchived] : [], keys: false }
+        ].forEach((group) => {
+          if (!group.entries.length) return;
+          const optgroup = document.createElement("optgroup");
+          optgroup.label = group.label;
+          group.entries.forEach((item) =>
+            appendOption(
+              optgroup,
+              item.id,
+              `${group.keys ? shortcutPrefix(item.shortcut) : ""}${item.name} (${counts[item.id] || 0})`
+            )
+          );
+          portfolioFilterEl.appendChild(optgroup);
+        });
+        appendOption(portfolioFilterEl, "__unassigned", `Unassigned (${counts.__unassigned || 0})`);
+
+        if (!values.includes(PS.selectedPortfolio)) PS.selectedPortfolio = "all";
+        portfolioFilterEl.value = PS.selectedPortfolio;
+        portfolioFilterEl.classList.toggle("scoped", PS.selectedPortfolio !== "all");
+      }
+
+      function renderEpicFilter(tagOverrides) {
+        const epicMeta = window.todoData.epic_meta || {};
+        const data = portfolioData();
+        const counts = PivotalData.countTasksByEpic(tasksWithEffectiveTags(window.todoData.tasks || [], tagOverrides), epicMeta);
+        const portfolioCounts = PivotalData.countTasksByPortfolio(tasksWithEffectiveTags(window.todoData.tasks || [], tagOverrides), epicMeta, data);
+        const scopedAll = PS.selectedPortfolio === "all" ? counts.all : portfolioCounts[PS.selectedPortfolio];
+        const options = [
+          { value: "all", label: `All (${scopedAll || 0})` },
+          ...FocusLogic.rankEpicTags(PivotalData.getEpicsForPortfolioFilter(PS.selectedPortfolio, epicMeta, data)).map((tag) => ({
+            value: tag,
+            label: `#${tag} (${counts[tag] || 0})`
+          })),
+          // A story with no epic can never belong to a portfolio, so this entry
+          // is only reachable when the portfolio scope still admits such stories.
+          ...(PS.selectedPortfolio === "all" || PS.selectedPortfolio === "__unassigned"
+            ? [{ value: "__uncategorized", label: `Uncategorized (${counts.__uncategorized || 0})` }]
+            : [])
+        ];
+        epicFilterEl.innerHTML = "";
+        options.forEach((option) => {
+          const el = document.createElement("option");
+          el.value = option.value;
+          el.textContent = option.label;
+          epicFilterEl.appendChild(el);
+        });
+        const selectedExists = options.some((option) => option.value === PS.selectedEpic);
+        if (!selectedExists) PS.selectedEpic = "all";
+        epicFilterEl.value = PS.selectedEpic;
+      }
+
+      function renderDirFilter(tagOverrides) {
+        const epicMeta = window.todoData.epic_meta || {};
+        const counts = PivotalData.countTasksByDir(tasksWithEffectiveTags(window.todoData.tasks || [], tagOverrides), epicMeta);
+        const dirs = PivotalData.getKnownDirs(epicMeta);
+        const options = [
+          { value: "all", label: `All dirs (${counts.all || 0})` },
+          ...dirs.map((dir) => ({
+            value: dir,
+            label: `${dirLabel(dir)} (${counts[dir] || 0})`
+          })),
+          { value: "__no_dir", label: `No dir (${counts.__no_dir || 0})` }
+        ];
+        dirFilterEl.innerHTML = "";
+        options.forEach((option) => {
+          const el = document.createElement("option");
+          el.value = option.value;
+          el.textContent = option.label;
+          dirFilterEl.appendChild(el);
+        });
+        const selectedExists = options.some((option) => option.value === PS.selectedDir);
+        if (!selectedExists) PS.selectedDir = "all";
+        dirFilterEl.value = PS.selectedDir;
+      }
+
+      function queuedRowHTML(item, metaHTML) {
+        const storyType = PivotalUtils.storyTypeFor(item.tags || []);
+        return `<div class="task-row"><span class="drag-handle" aria-hidden="true">⋮</span>`
+          + (storyType.icon ? `<span class="story-type" title="${storyType.type}">${storyType.icon}</span>` : "")
+          + `<div class="task-text">${PivotalUtils.renderInlineMarkdown(item.text)}</div>`
+          + (metaHTML ? `<span class="row-meta">${metaHTML}</span>` : "")
+          + `</div>`;
+      }
+
+      function makeField(labelText, control) {
+        const wrap = document.createElement("div");
+        const label = document.createElement("label");
+        label.textContent = labelText;
+        wrap.append(label, control);
+        return wrap;
+      }
+
+      function markSaved(taskId) {
+        PS.lastSaved = { id: taskId, at: Date.now() };
+      }
+
+      function renderStoryNotesThread(task) {
+        const thread = document.createElement("div");
+        thread.className = "story-notes-thread";
+        thread.dataset.testid = "story-notes-thread";
+        thread.hidden = true;
+        const list = document.createElement("div");
+        list.className = "story-notes-list";
+        const form = document.createElement("form");
+        form.className = "story-note-form";
+        form.dataset.testid = "story-note-form";
+        const textarea = document.createElement("textarea");
+        textarea.placeholder = "Add a note";
+        textarea.setAttribute("aria-label", "Story note");
+        textarea.draggable = false;
+        const addButton = document.createElement("button");
+        addButton.type = "submit";
+        addButton.className = "primary";
+        addButton.textContent = "Add note";
+        addButton.disabled = true;
+        form.append(textarea, addButton);
+        thread.append(form, list);
+
+        ["dragstart", "dragover", "drop"].forEach((eventName) => {
+          thread.addEventListener(eventName, (event) => event.stopPropagation());
+        });
+
+        list.addEventListener("click", (event) => {
+          const anchor = event.target.closest('a[href^="file://"]');
+          if (!anchor) return;
+          event.preventDefault();
+          const path = decodeURIComponent(anchor.href.replace(/^file:\/\/\/?/, "/"));
+          fetch("/api/open-file", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ path }),
+          }).catch(() => {});
+        });
+
+        function renderNotes(notes) {
+          list.innerHTML = "";
+          if (typeof thread.onCountChange === "function") thread.onCountChange(notes.length);
+          if (!notes.length) {
+            const empty = document.createElement("div");
+            empty.className = "story-note-state";
+            empty.textContent = "No notes yet.";
+            list.appendChild(empty);
+            return;
+          }
+          notes.forEach((note) => {
+            const item = document.createElement("div");
+            item.className = "story-note";
+            const text = document.createElement("div");
+            text.innerHTML = PivotalUtils.linkifyHTML(PivotalUtils.escapeHTML(note.text || ""));
+            const time = document.createElement("span");
+            time.className = "story-note-time";
+            time.textContent = note.at || "";
+            item.append(text, time);
+            list.appendChild(item);
+          });
+        }
+
+        async function loadNotes() {
+          list.innerHTML = "";
+          const loading = document.createElement("div");
+          loading.className = "story-note-state";
+          loading.textContent = "Loading notes...";
+          list.appendChild(loading);
+          try {
+            const entry = await StoryNotes.load(task.task_id);
+            renderNotes(entry.notes);
+          } catch {
+            list.innerHTML = "";
+            const error = document.createElement("div");
+            error.className = "story-note-state";
+            error.textContent = "Could not load notes.";
+            list.appendChild(error);
+          }
+        }
+
+        textarea.addEventListener("input", () => {
+          addButton.disabled = !textarea.value.trim();
+        });
+        textarea.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) {
+            const text = textarea.value.trim();
+            if (text && !addButton.disabled) {
+              event.preventDefault();
+              if (typeof form.requestSubmit === "function") {
+                form.requestSubmit();
+              } else {
+                addButton.click();
+              }
+            }
+          }
+        });
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const text = textarea.value.trim();
+          if (!text) return;
+          addButton.disabled = true;
+          try {
+            const entry = await StoryNotes.add(task.task_id, text);
+            textarea.value = "";
+            renderNotes(entry.notes);
+          } catch {
+            addButton.disabled = false;
+            list.innerHTML = "";
+            const error = document.createElement("div");
+            error.className = "story-note-state";
+            error.textContent = "Could not add note.";
+            list.appendChild(error);
+          }
+        });
+        thread.loadNotes = loadNotes;
+        thread.focusInput = () => textarea.focus();
+        return thread;
+      }
+
+      function flashSavedCard(taskId) {
+        const card = panesEl.querySelector(`.task-card[data-task-id="${CSS.escape(taskId)}"]`) || document.getElementById(taskId);
+        if (!card) return;
+        card.classList.remove("saved-flash");
+        void card.offsetWidth;
+        card.classList.add("saved-flash");
+      }
+
+      function nextEditableCardId(taskId, backwards) {
+        const seen = new Set();
+        const ids = [];
+        panesEl.querySelectorAll(".task-card[id]").forEach((el) => {
+          if (!seen.has(el.id)) {
+            seen.add(el.id);
+            ids.push(el.id);
+          }
+        });
+        if (!ids.length) return null;
+        const idx = ids.indexOf(taskId);
+        if (idx === -1) return null;
+        return ids[(idx + (backwards ? -1 : 1) + ids.length) % ids.length];
+      }
+
+      function titleEditOnSave(task) {
+        return (value, meta) => {
+          const hop = meta && meta.tab ? nextEditableCardId(task.task_id, meta.shift) : null;
+          if (value !== null) IceboxLogic.saveTextOverride(task.task_id, value);
+          render();
+          if (hop) openTitleEditorById(hop);
+          if (value !== null) flashSavedCard(task.task_id);
+        };
+      }
+
+      function openTitleEditorById(taskId) {
+        const task = (window.todoData.tasks || []).find((item) => item.task_id === taskId);
+        if (!task) return;
+        if (PS.selectedTaskId !== taskId) {
+          PS.selectedTaskId = taskId;
+          render();
+        }
+        const card = document.getElementById(taskId);
+        if (!card || card.querySelector(".inline-edit-wrap")) return;
+        card.scrollIntoView({ block: "nearest" });
+        PivotalEdit.startInlineEdit(card, task, window.todoData.epic_meta || {}, titleEditOnSave(task), null);
+      }
+
+      function renderTask(task, statusOverrides, textOverrides, tagOverrides, paneId) {
+        const status = FocusLogic.getEffectiveStatus(task, statusOverrides);
+        const text = IceboxLogic.getEffectiveText(task, textOverrides);
+        const tags = taskWithEffectiveTags(task, tagOverrides).tags;
+        const epicMeta = window.todoData.epic_meta || {};
+        const knownEpics = new Set(PivotalData.getKnownEpicTags(epicMeta));
+        const epicTags = tags.filter((tag) => knownEpics.has(String(tag).replace(/^#/, "")));
+        const ordinaryTags = tags.filter((tag) => !knownEpics.has(String(tag).replace(/^#/, "")) && !PivotalUtils.isReservedTypeTag(tag));
+        const storyType = PivotalUtils.storyTypeFor(tags);
+        const card = document.createElement("article");
+        card.className = "task-card";
+        card.dataset.status = status;
+        card.id = task.task_id;
+        card.classList.toggle("selected", PS.selectedTaskId === task.task_id);
+        const top = document.createElement("div");
+        top.className = "task-row";
+        const dragHandle = document.createElement("span");
+        dragHandle.className = "drag-handle";
+        dragHandle.setAttribute("aria-hidden", "true");
+        dragHandle.textContent = "⋮";
+        let typeIcon = null;
+        if (storyType.icon) {
+          typeIcon = document.createElement("span");
+          typeIcon.className = "story-type";
+          typeIcon.dataset.testid = "story-type";
+          typeIcon.title = storyType.type;
+          typeIcon.textContent = storyType.icon;
+        }
+        const textEl = document.createElement("div");
+        textEl.className = "task-text";
+        textEl.innerHTML = PivotalUtils.renderInlineMarkdown(text);
+        textEl.title = "Click to show full title, click again to edit";
+        function startTitleEdit(event) {
+          PivotalEdit.startInlineEdit(card, task, epicMeta, titleEditOnSave(task), event);
+        }
+        textEl.addEventListener("click", (event) => {
+          if (card.querySelector(".inline-edit-wrap")) return;
+          if (PS.selectedTaskId !== task.task_id) return;
+          event.preventDefault();
+          event.stopPropagation();
+          clearTimeout(cardSelectionTimer);
+          startTitleEdit(event);
+        });
+        textEl.addEventListener("dblclick", (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          if (card.querySelector(".inline-edit-wrap")) return;
+          clearTimeout(cardSelectionTimer);
+          PS.selectedTaskId = task.task_id;
+          card.classList.add("selected");
+          startTitleEdit(event);
+        });
+        const menuButton = document.createElement("button");
+        menuButton.type = "button";
+        menuButton.className = "story-menu";
+        menuButton.dataset.testid = "story-menu";
+        menuButton.title = "Story actions";
+        menuButton.setAttribute("aria-label", "Story actions");
+        menuButton.textContent = "...";
+        menuButton.addEventListener("click", (event) => {
+          event.stopPropagation();
+          PS.selectedTaskId = PS.selectedTaskId === task.task_id ? null : task.task_id;
+          render();
+        });
+        const storyEntry = (window.todoData.story_sessions || {})[task.task_id] || {};
+        const noteCount = Array.isArray(storyEntry.notes) ? storyEntry.notes.length : 0;
+        let noteBadge = null;
+        if (noteCount > 0) {
+          noteBadge = document.createElement("span");
+          noteBadge.className = "note-badge";
+          noteBadge.dataset.testid = "note-badge";
+          noteBadge.title = `${noteCount} note${noteCount === 1 ? "" : "s"}`;
+          noteBadge.textContent = `🗒 ${noteCount}`;
+        }
+        const quickNoteButton = document.createElement("button");
+        quickNoteButton.type = "button";
+        quickNoteButton.className = "quick-note-btn";
+        quickNoteButton.dataset.testid = "quick-note-btn";
+        quickNoteButton.title = "Add a note";
+        quickNoteButton.setAttribute("aria-label", "Add a note");
+        quickNoteButton.textContent = "📝";
+        quickNoteButton.addEventListener("click", (event) => {
+          event.stopPropagation();
+          openNotesThread();
+        });
+        const rowMeta = document.createElement("span");
+        rowMeta.className = "row-meta";
+        if (noteBadge) rowMeta.appendChild(noteBadge);
+        rowMeta.append(quickNoteButton, menuButton);
+        top.appendChild(dragHandle);
+        if (typeIcon) top.appendChild(typeIcon);
+        top.append(textEl, rowMeta);
+        const tagWrap = document.createElement("div");
+        tagWrap.className = "tags";
+        epicTags.forEach((tag) => {
+          const clean = String(tag).replace(/^#/, "");
+          const tagEl = document.createElement("span");
+          tagEl.className = "epic-chip";
+          tagEl.dataset.testid = "epic-chip";
+          tagEl.style.backgroundColor = FocusLogic.epicColorFor(clean, epicMeta);
+          tagEl.textContent = `#${clean}`;
+          tagEl.title = `Open #${clean}`;
+          tagEl.addEventListener("click", (event) => {
+            event.stopPropagation();
+            openEpicPane(clean);
+          });
+          tagWrap.appendChild(tagEl);
+        });
+        ordinaryTags.forEach((tag) => {
+          const tagEl = document.createElement("span");
+          tagEl.className = "tag secondary";
+          tagEl.textContent = `#${tag}`;
+          tagWrap.appendChild(tagEl);
+        });
+        const expanded = document.createElement("div");
+        expanded.className = "card-expanded";
+        const actions = document.createElement("div");
+        actions.className = "card-actions";
+        const statusSelect = document.createElement("select");
+        statusSelect.className = "compact-status-select";
+        statusSelect.dataset.testid = "compact-status-select";
+        statusSelect.setAttribute("aria-label", "Story status");
+        PivotalState.paneDefs.filter((pane) => pane.status).forEach((pane) => {
+          const option = document.createElement("option");
+          option.value = pane.status;
+          option.textContent = pane.label;
+          option.selected = pane.status === status;
+          statusSelect.appendChild(option);
+        });
+        statusSelect.addEventListener("change", (event) => {
+          event.stopPropagation();
+          FocusLogic.saveStatusOverride(task.task_id, statusSelect.value);
+          markSaved(task.task_id);
+          render();
+        });
+        const tagButton = document.createElement("button");
+        tagButton.textContent = "Tag";
+        tagButton.addEventListener("click", (event) => {
+          event.stopPropagation();
+          const tag = prompt("Tag");
+          if (tag) FocusLogic.saveTagOverride(task.task_id, tag);
+          render();
+        });
+        const link = document.createElement("button");
+        link.textContent = "Link";
+        link.addEventListener("click", (event) => {
+          event.stopPropagation();
+          if (navigator.clipboard) navigator.clipboard.writeText(location.origin + "/#id=" + task.task_id);
+        });
+        const defaultAgent = getDefaultAgent();
+        const launchWrap = document.createElement("span");
+        launchWrap.className = `launch-split agent-${defaultAgent}`;
+        const launchMain = document.createElement("button");
+        launchMain.type = "button";
+        launchMain.className = "launch-main";
+        launchMain.dataset.testid = "story-launch";
+        launchMain.textContent = `▶ Launch ${AGENT_LABELS[defaultAgent]}`;
+        launchMain.addEventListener("click", (event) => {
+          event.stopPropagation();
+          CodexLaunch.launch(task, launchMain, getDefaultAgent());
+        });
+        const launchCaret = document.createElement("button");
+        launchCaret.type = "button";
+        launchCaret.className = "launch-caret";
+        launchCaret.dataset.testid = "story-launch-menu";
+        launchCaret.textContent = "▾";
+        launchCaret.setAttribute("aria-expanded", "false");
+        launchCaret.setAttribute("aria-label", "Launch options");
+        const launchPop = document.createElement("div");
+        launchPop.className = "launch-pop";
+        launchPop.hidden = true;
+        launchPop.addEventListener("click", (event) => event.stopPropagation());
+
+        function closeLaunchPop() {
+          launchPop.hidden = true;
+          launchCaret.setAttribute("aria-expanded", "false");
+        }
+
+        function launchPopItem(provider, hintText) {
+          const item = document.createElement("div");
+          item.className = "launch-pop-item";
+          const name = document.createElement("span");
+          name.className = "launch-pop-name";
+          name.append(agentBadge(provider), document.createTextNode(` Launch ${provider === "claude" ? "Claude Code" : "Codex"}`));
+          if (provider === getDefaultAgent()) {
+            const tag = document.createElement("span");
+            tag.className = "launch-pop-default";
+            tag.textContent = "default";
+            name.appendChild(tag);
+          }
+          const hint = document.createElement("span");
+          hint.className = "launch-pop-hint";
+          hint.textContent = hintText;
+          item.append(name, hint);
+          item.addEventListener("click", () => {
+            closeLaunchPop();
+            CodexLaunch.launch(task, launchMain, provider);
+          });
+          return item;
+        }
+
+        function buildLaunchPop() {
+          launchPop.innerHTML = "";
+          launchPop.appendChild(launchPopItem("codex", "new thread in Terminal · prompt preview first"));
+          launchPop.appendChild(launchPopItem("claude", "new session in Terminal · prompt preview first"));
+          const lastSession = lastSessionFor(task);
+          if (lastSession) {
+            const divider = document.createElement("div");
+            divider.className = "launch-pop-divider";
+            launchPop.appendChild(divider);
+            const item = document.createElement("div");
+            item.className = "launch-pop-item";
+            item.dataset.testid = "story-resume-last";
+            const name = document.createElement("span");
+            name.className = "launch-pop-name";
+            name.textContent = "↻ Resume last session";
+            const hint = document.createElement("span");
+            hint.className = "launch-pop-hint";
+            const resumeVerb = lastSession.provider === "claude" ? "claude --resume" : "codex resume";
+            hint.append(
+              agentBadge(lastSession.provider),
+              document.createTextNode(` ${resumeVerb} ${String(lastSession.session_id).slice(0, 8)}… · ${sessionAge(lastSession.started_at)}`)
+            );
+            item.append(name, hint);
+            item.addEventListener("click", () => resumeSession(task, lastSession, name));
+            launchPop.appendChild(item);
+          }
+          const footerDivider = document.createElement("div");
+          footerDivider.className = "launch-pop-divider";
+          const footer = document.createElement("div");
+          footer.className = "launch-pop-footer";
+          footer.textContent = `⚙ Default agent: ${AGENT_LABELS[getDefaultAgent()]} — change in Preferences`;
+          footer.addEventListener("click", () => {
+            closeLaunchPop();
+            document.getElementById("prefs-toggle").click();
+          });
+          launchPop.append(footerDivider, footer);
+        }
+
+        launchCaret.addEventListener("click", (event) => {
+          event.stopPropagation();
+          if (!launchPop.hidden) {
+            closeLaunchPop();
+            return;
+          }
+          buildLaunchPop();
+          launchPop.hidden = false;
+          launchPop.style.left = "0";
+          launchPop.style.right = "auto";
+          const popRect = launchPop.getBoundingClientRect();
+          if (popRect.right > window.innerWidth - 8) {
+            launchPop.style.left = "auto";
+            launchPop.style.right = "0";
+          }
+          launchCaret.setAttribute("aria-expanded", "true");
+          setTimeout(() => {
+            document.addEventListener("click", function close(evt) {
+              if (!launchPop.contains(evt.target)) {
+                closeLaunchPop();
+                document.removeEventListener("click", close);
+              }
+            });
+            document.addEventListener("keydown", function esc(evt) {
+              if (evt.key === "Escape") {
+                closeLaunchPop();
+                document.removeEventListener("keydown", esc);
+              }
+            });
+          }, 0);
+        });
+        launchWrap.append(launchMain, launchCaret, launchPop);
+        const notesButton = document.createElement("button");
+        notesButton.type = "button";
+        notesButton.dataset.testid = "story-notes-toggle";
+        notesButton.textContent = `Notes ${noteCount}`;
+        notesButton.setAttribute("aria-expanded", "false");
+        const notesThread = renderStoryNotesThread(task);
+        notesThread.onCountChange = (count) => { notesButton.textContent = `Notes ${count}`; };
+        function openNotesThread() {
+          if (PS.selectedTaskId !== task.task_id) {
+            PS.selectedTaskId = task.task_id;
+            card.classList.add("selected");
+          }
+          notesThread.hidden = false;
+          notesButton.setAttribute("aria-expanded", "true");
+          notesThread.loadNotes();
+          requestAnimationFrame(() => notesThread.focusInput());
+        }
+        notesButton.addEventListener("click", (event) => {
+          event.stopPropagation();
+          notesThread.hidden = !notesThread.hidden;
+          notesButton.setAttribute("aria-expanded", String(!notesThread.hidden));
+          if (!notesThread.hidden) notesThread.loadNotes();
+        });
+        card.openNotes = openNotesThread;
+        const params = new URLSearchParams(location.search || location.hash.replace(/^#/, "?"));
+        const deepLinkId = params.get("id") || params.get("tid") || params.get("storyId");
+        if (deepLinkId === task.task_id) {
+          notesThread.hidden = false;
+          notesButton.setAttribute("aria-expanded", "true");
+          notesThread.loadNotes();
+        }
+        const epicPicker = document.createElement("select");
+        epicPicker.className = "epic-picker";
+        epicPicker.dataset.testid = "epic-picker";
+        const blankOption = document.createElement("option");
+        blankOption.value = "";
+        blankOption.textContent = "Add epic";
+        epicPicker.appendChild(blankOption);
+        PivotalData.getKnownEpicTags(epicMeta).forEach((tag) => {
+          const option = document.createElement("option");
+          option.value = tag;
+          option.textContent = `#${tag}`;
+          epicPicker.appendChild(option);
+        });
+        epicPicker.addEventListener("change", (event) => {
+          event.stopPropagation();
+          if (!epicPicker.value) return;
+          FocusLogic.saveTagOverride(task.task_id, epicPicker.value);
+          epicPicker.value = "";
+          markSaved(task.task_id);
+          render();
+        });
+        const fieldStack = document.createElement("div");
+        fieldStack.className = "field-stack";
+        fieldStack.dataset.testid = "field-stack";
+        ["dragstart", "dragover", "drop"].forEach((eventName) => {
+          fieldStack.addEventListener(eventName, (event) => event.stopPropagation());
+        });
+        const fieldRow = document.createElement("div");
+        fieldRow.className = "field-row";
+        fieldRow.append(makeField("State", statusSelect), makeField("Epic", epicPicker));
+        fieldStack.append(fieldRow);
+        if (PS.lastSaved && PS.lastSaved.id === task.task_id && Date.now() - PS.lastSaved.at < 4000) {
+          const saved = document.createElement("div");
+          saved.className = "save-state";
+          saved.dataset.testid = "save-state";
+          saved.textContent = "Saved just now";
+          fieldStack.appendChild(saved);
+          setTimeout(() => {
+            saved.style.transition = "opacity 0.6s";
+            saved.style.opacity = "0";
+          }, 2600);
+        }
+        actions.append(notesButton, tagButton, link, launchWrap);
+        expanded.appendChild(fieldStack);
+        if (tagWrap.children.length) expanded.appendChild(tagWrap);
+        expanded.append(actions, notesThread);
+        card.append(top, expanded);
+        card.addEventListener("click", (event) => {
+          if (event.target.closest("button, select, input, textarea, .epic-chip, .drag-handle, .inline-edit-wrap, .card-expanded")) return;
+          clearTimeout(cardSelectionTimer);
+          cardSelectionTimer = setTimeout(() => {
+            PS.selectedTaskId = PS.selectedTaskId === task.task_id ? null : task.task_id;
+            render();
+          }, 180);
+        });
+        if (paneId) PivotalDND.attachDragHandlers(card, task.task_id, paneId);
+        return card;
+      }
+
+      function renderQuickAdd(pane) {
+        const form = document.createElement("form");
+        form.className = "quick-add";
+        form.setAttribute("data-testid", "quick-add");
+        const input = document.createElement("input");
+        input.placeholder = "+ Add story";
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "primary";
+        button.textContent = "+";
+        form.append(input, button);
+        function addItem() {
+          const text = input.value.trim();
+          if (!text) return;
+          const tags = Array.from(text.matchAll(/#([A-Za-z0-9_]+)/g)).map((match) => match[1]);
+          IceboxLogic.addToQueue(text, pane.status || "Pending", tags);
+          input.value = "";
+          render();
+          const nextInput = panesEl.querySelector(`section[data-pane-id="${pane.id}"] .quick-add input`);
+          if (nextInput) nextInput.focus();
+        }
+        form.addEventListener("submit", (event) => {
+          event.preventDefault();
+          addItem();
+        });
+        button.addEventListener("click", addItem);
+        return form;
+      }
+
+      function cssEpicColor(color, fallback) {
+        if (/^[0-9A-Fa-f]{6}$/.test(color || "")) return `#${color}`;
+        if (/^#[0-9A-Fa-f]{6}$/.test(color || "")) return color;
+        return fallback;
+      }
+
+      let showDoneEpics = false;
+      let epicComposerOpen = false;
+
+      const EPIC_COMPOSER_COLORS = ["007AFF", "FF9500", "34C759", "AF52DE", "FF3B30", "00A6A6", "A2845E", "5E5CE6"];
+
+      function renderEpicComposer(epicMeta) {
+        const form = document.createElement("form");
+        form.className = "epic-composer";
+        form.dataset.testid = "epic-composer";
+
+        const tagInput = document.createElement("input");
+        tagInput.placeholder = "#tag";
+        tagInput.dataset.testid = "epic-composer-tag";
+
+        const dirSelect = document.createElement("select");
+        dirSelect.dataset.testid = "epic-composer-dir";
+        const noDirOption = document.createElement("option");
+        noDirOption.value = "";
+        noDirOption.textContent = "No project";
+        dirSelect.appendChild(noDirOption);
+        PivotalData.getKnownDirs(epicMeta).forEach((dir) => {
+          const option = document.createElement("option");
+          option.value = dir;
+          option.textContent = dir;
+          dirSelect.appendChild(option);
+        });
+
+        const colorSelect = document.createElement("select");
+        colorSelect.dataset.testid = "epic-composer-color";
+        const autoColorOption = document.createElement("option");
+        autoColorOption.value = "";
+        autoColorOption.textContent = "Auto color";
+        colorSelect.appendChild(autoColorOption);
+        EPIC_COMPOSER_COLORS.forEach((color) => {
+          const option = document.createElement("option");
+          option.value = color;
+          option.textContent = `#${color}`;
+          colorSelect.appendChild(option);
+        });
+
+        const error = document.createElement("div");
+        error.className = "epic-composer-error";
+        error.dataset.testid = "epic-composer-error";
+        error.hidden = true;
+
+        const actions = document.createElement("div");
+        actions.className = "epic-composer-actions";
+        const createButton = document.createElement("button");
+        createButton.type = "submit";
+        createButton.className = "primary";
+        createButton.textContent = "Create epic";
+        const cancelButton = document.createElement("button");
+        cancelButton.type = "button";
+        cancelButton.textContent = "Cancel";
+        cancelButton.addEventListener("click", () => {
+          epicComposerOpen = false;
+          render();
+        });
+        actions.append(createButton, cancelButton);
+
+        form.append(tagInput, dirSelect, colorSelect, error, actions);
+
+        form.addEventListener("submit", (event) => {
+          event.preventDefault();
+          const tag = tagInput.value.trim();
+          if (!tag) return;
+          const portfolioId = PS.selectedPortfolio !== "all" && PS.selectedPortfolio !== "__unassigned" ? PS.selectedPortfolio : null;
+          fetch("/api/epics", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              tag,
+              dir: dirSelect.value || null,
+              color: colorSelect.value || null,
+              portfolio_id: portfolioId
+            })
+          })
+            .then((response) => response.json().then((body) => ({ ok: response.ok, body })))
+            .then(({ ok, body }) => {
+              if (!ok) {
+                error.textContent = body.error || "Could not create epic";
+                error.hidden = false;
+                return;
+              }
+              epicComposerOpen = false;
+              PivotalSyncUI.refreshFromServer();
+            })
+            .catch(() => {
+              error.textContent = "Could not reach server";
+              error.hidden = false;
+            });
+        });
+
+        return form;
+      }
+
+      function renderEpicPane() {
+        const pane = document.createElement("section");
+        pane.className = "pane";
+        pane.dataset.testid = "epics-pane";
+        pane.dataset.paneId = "epics";
+        const paneDef = { id: "epics", label: "Epics" };
+        const epicMeta = window.todoData.epic_meta || {};
+        const allTags = PivotalData.getKnownEpicTags(epicMeta);
+        const tags = FocusLogic.rankEpicTags(PivotalData.getEpicsForDirFilter(PS.selectedDir, epicMeta)
+          .filter((tag) => PivotalData.epicMatchesPortfolioFilter(tag, PS.selectedPortfolio, portfolioData())));
+        const counts = PivotalData.countTasksByEpic(tasksWithEffectiveTags(window.todoData.tasks || [], FocusLogic.loadTagOverrides()), epicMeta);
+        const statusCounts = PivotalData.countTasksByEpicStatus(tasksWithEffectiveTags(window.todoData.tasks || [], FocusLogic.loadTagOverrides()), epicMeta, FocusLogic.loadStatusOverrides());
+        const isDoneEpic = (tag) => {
+          const stats = statusCounts[tag] || { total: 0, done: 0 };
+          return stats.total > 0 && stats.done === stats.total;
+        };
+        const activeTags = tags.filter((tag) => !isDoneEpic(tag));
+        const doneTags = tags.filter(isDoneEpic);
+        const visibleTags = showDoneEpics ? activeTags.concat(doneTags) : activeTags;
+        pane.appendChild(renderPaneHeader(paneDef, activeTags.length));
+        if (epicComposerOpen) {
+          pane.appendChild(renderEpicComposer(epicMeta));
+        } else {
+          const toggle = document.createElement("button");
+          toggle.type = "button";
+          toggle.className = "epic-new-toggle";
+          toggle.dataset.testid = "epic-new-toggle";
+          toggle.textContent = "+ New epic";
+          toggle.addEventListener("click", () => {
+            epicComposerOpen = true;
+            render();
+            const tagInput = panesEl.querySelector('[data-testid="epic-composer-tag"]');
+            if (tagInput) tagInput.focus();
+          });
+          pane.appendChild(toggle);
+        }
+        const list = document.createElement("div");
+        list.className = "task-list";
+        if (!tags.length) {
+          list.innerHTML = '<div class="empty">No epics</div>';
+        } else {
+          visibleTags.forEach((tag) => {
+            const meta = epicMeta[tag] || {};
+            const row = document.createElement("div");
+            row.className = "task-card epic-row";
+            row.dataset.testid = "epic-pane-row";
+            const dot = document.createElement("span");
+            dot.className = "dot";
+            dot.style.background = cssEpicColor(meta.color, FocusLogic.epicColorFor(tag, epicMeta));
+            const body = document.createElement("button");
+            body.type = "button";
+            body.setAttribute("aria-label", `Filter to #${tag}`);
+            body.addEventListener("click", () => {
+              PS.selectedEpic = tag;
+              openEpicPane(tag);
+            });
+            const name = document.createElement("strong");
+            name.textContent = `#${tag}`;
+            body.appendChild(name);
+            const stats = statusCounts[tag] || { total: 0, done: 0 };
+            const donePct = stats.total ? Math.round((stats.done / stats.total) * 100) : 0;
+            const bar = document.createElement("div");
+            bar.className = "epic-bar";
+            const barFill = document.createElement("span");
+            barFill.style.width = `${donePct}%`;
+            bar.appendChild(barFill);
+            body.appendChild(bar);
+            const count = document.createElement("span");
+            count.className = "badge";
+            count.textContent = counts[tag] || 0;
+            row.append(dot, body, count);
+            PivotalDND.attachEpicDragHandlers(row, tag, allTags, { onDrop: render });
+            list.appendChild(row);
+          });
+        }
+        PivotalDND.wireEpicDropTarget(list, { onDrop: render });
+        pane.appendChild(list);
+        if (doneTags.length) {
+          const footer = document.createElement("button");
+          footer.type = "button";
+          footer.className = "epic-done-footer";
+          footer.dataset.testid = "epic-done-footer";
+          footer.textContent = showDoneEpics
+            ? "▾ hide done epics"
+            : `▸ ${doneTags.length} done epic${doneTags.length === 1 ? "" : "s"}`;
+          footer.addEventListener("click", () => {
+            showDoneEpics = !showDoneEpics;
+            render();
+          });
+          pane.appendChild(footer);
+        }
+        return pane;
+      }
+
+      function renderEpicQuickAdd(tag) {
+        const form = document.createElement("form");
+        form.className = "quick-add";
+        form.setAttribute("data-testid", "epic-detail-quick-add");
+        const input = document.createElement("input");
+        input.placeholder = `Add to #${tag}`;
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "primary";
+        button.textContent = "+";
+        form.append(input, button);
+        function addItem() {
+          const text = input.value.trim();
+          if (!text) return;
+          IceboxLogic.addToQueue(text, "Pending", [tag]);
+          input.value = "";
+          render();
+          const nextInput = panesEl.querySelector(`[data-testid="epic-detail-pane"][data-epic="${CSS.escape(tag)}"] .quick-add input`);
+          if (nextInput) nextInput.focus();
+        }
+        form.addEventListener("submit", (event) => {
+          event.preventDefault();
+          addItem();
+        });
+        button.addEventListener("click", addItem);
+        return form;
+      }
+
+      function renderEpicMetadata(meta, tag, epicMeta) {
+        const metaList = document.createElement("div");
+        metaList.className = "epic-detail-metadata";
+        metaList.dataset.testid = "epic-detail-metadata";
+        [
+          ["dir", meta.dir],
+          ["resume", meta.resume],
+          ["session_log", meta.session_log]
+        ].filter((item) => item[1]).forEach(([label, value]) => {
+          const row = document.createElement("div");
+          const key = document.createElement("span");
+          key.textContent = label;
+          const val = document.createElement("strong");
+          val.textContent = value;
+          row.append(key, val);
+          metaList.appendChild(row);
+        });
+        if (meta.dir) {
+          const siblings = PivotalData.getEpicsForDir(meta.dir, epicMeta || {}).filter((other) => other !== tag);
+          if (siblings.length) {
+            const row = document.createElement("div");
+            row.dataset.testid = "epic-detail-dir-siblings";
+            const key = document.createElement("span");
+            key.textContent = "other epics in dir";
+            const val = document.createElement("strong");
+            val.textContent = siblings.map((other) => `#${other}`).join(", ");
+            row.append(key, val);
+            metaList.appendChild(row);
+          }
+        }
+        if (!metaList.children.length) {
+          const row = document.createElement("div");
+          const key = document.createElement("span");
+          key.textContent = "metadata";
+          const val = document.createElement("strong");
+          val.textContent = "None";
+          row.append(key, val);
+          metaList.appendChild(row);
+        }
+        return metaList;
+      }
+
+      function renderEpicDetailPane(tag, statusOverrides, textOverrides, tagOverrides) {
+        const epicMeta = window.todoData.epic_meta || {};
+        const meta = epicMeta[tag] || {};
+        const paneId = `epic-${tag}`;
+        const tasks = effectiveEpicTasks(tag, statusOverrides, textOverrides, tagOverrides);
+        const queued = IceboxLogic.loadQueue().filter((item) => PivotalData.taskMatchesEpicFilter({ tags: item.tags || [] }, tag, epicMeta));
+        const total = tasks.length + queued.length;
+        const detailPane = document.createElement("section");
+        detailPane.className = "pane";
+        detailPane.classList.add("epic-story-pane");
+        detailPane.dataset.testid = "epic-detail-pane";
+        detailPane.dataset.epic = tag;
+        detailPane.appendChild(renderPaneHeader(
+          { id: paneId, label: `#${tag}` },
+          total,
+          () => closeEpicDetailPane(tag)
+        ));
+
+        detailPane.appendChild(renderEpicQuickAdd(tag));
+
+        const storyList = document.createElement("div");
+        storyList.className = "task-list";
+        PivotalDND.wireDropTarget(storyList, paneId, { onDrop: render });
+
+        // Manual rank order first, then a stable partition that always sinks
+        // Done stories to the bottom regardless of where they were dragged.
+        const ranked = FocusLogic.rankTasksForPane([...queued, ...tasks], paneId);
+        const isDoneItem = (item) => (item.task_id
+          ? FocusLogic.getEffectiveStatus(item, statusOverrides)
+          : (item.status || "Pending")) === "Done";
+        const displayItems = [
+          ...ranked.filter((item) => !isDoneItem(item)),
+          ...ranked.filter((item) => isDoneItem(item)),
+        ];
+
+        displayItems.forEach((item) => {
+          if (item.task_id) {
+            storyList.appendChild(renderTask(item, statusOverrides, textOverrides, tagOverrides, paneId));
+            return;
+          }
+          const card = document.createElement("article");
+          card.className = "task-card";
+          card.dataset.status = item.status || "Pending";
+          card.innerHTML = queuedRowHTML(item, `<span class="epic-chip" style="background:${FocusLogic.epicColorFor(tag, epicMeta)}">#${PivotalUtils.escapeHTML(tag)}</span>`);
+          PivotalDND.attachDragHandlers(card, item.id, paneId);
+          storyList.appendChild(card);
+        });
+        if (!displayItems.length) {
+          const empty = document.createElement("div");
+          empty.className = "empty";
+          empty.textContent = "No stories";
+          storyList.appendChild(empty);
+        }
+        detailPane.appendChild(storyList);
+
+        const metadataDetails = document.createElement("details");
+        metadataDetails.className = "epic-story-metadata";
+        metadataDetails.dataset.testid = "epic-story-metadata";
+        const metadataSummary = document.createElement("summary");
+        metadataSummary.textContent = "Epic metadata";
+        metadataDetails.append(metadataSummary, renderEpicMetadata(meta, tag, epicMeta));
+        detailPane.appendChild(metadataDetails);
+
+        const activity = document.createElement("div");
+        activity.className = "epic-detail-activity";
+        activity.dataset.testid = "epic-detail-activity";
+        activity.textContent = "Session activity will appear here in a later phase.";
+        detailPane.appendChild(activity);
+        return detailPane;
+      }
+
+      function renderEpicDetailPanes(statusOverrides, textOverrides, tagOverrides) {
+        const epicMeta = window.todoData.epic_meta || {};
+        FocusLogic.loadEpicPanes().forEach((tag) => {
+          if (epicMeta[tag]
+            && PivotalData.epicMatchesDirFilter(tag, PS.selectedDir, epicMeta)
+            && PivotalData.epicMatchesPortfolioFilter(tag, PS.selectedPortfolio, portfolioData())) {
+            panesEl.appendChild(renderEpicDetailPane(tag, statusOverrides, textOverrides, tagOverrides));
+          }
+        });
+      }
+
+      function renderPane(pane, statusOverrides, textOverrides, tagOverrides) {
+        if (pane.id === "epics") return renderEpicPane();
+        const tasks = FocusLogic.rankTasksForPane(visibleTasksForPane(pane, statusOverrides, textOverrides, tagOverrides), pane.id);
+        const queued = FocusLogic.rankTasksForPane(IceboxLogic.loadQueue().filter((item) => (item.status || "Pending") === pane.status && PivotalData.taskMatchesEpicFilter({ tags: item.tags || [] }, PS.selectedEpic, window.todoData.epic_meta || {}) && PivotalData.taskMatchesDirFilter({ tags: item.tags || [] }, PS.selectedDir, window.todoData.epic_meta || {}) && PivotalData.taskMatchesPortfolioFilter({ tags: item.tags || [] }, PS.selectedPortfolio, window.todoData.epic_meta || {}, portfolioData())), pane.id);
+        const section = document.createElement("section");
+        section.className = "pane";
+        section.dataset.paneId = pane.id;
+        section.appendChild(renderPaneHeader(pane, tasks.length + queued.length));
+        section.appendChild(renderQuickAdd(pane));
+        const list = document.createElement("div");
+        list.className = "task-list";
+        PivotalDND.wireDropTarget(list, pane.id, { onDrop: render });
+        queued.forEach((item) => {
+          const card = document.createElement("article");
+          card.className = "task-card";
+          card.dataset.status = item.status;
+          const firstTag = (item.tags || [])[0];
+          card.innerHTML = queuedRowHTML(item, firstTag ? `<span class="tag secondary">#${PivotalUtils.escapeHTML(firstTag)}</span>` : "");
+          PivotalDND.attachDragHandlers(card, item.id, pane.id);
+          list.appendChild(card);
+        });
+        tasks.forEach((task) => list.appendChild(renderTask(task, statusOverrides, textOverrides, tagOverrides, pane.id)));
+        if (!tasks.length && !queued.length) {
+          const empty = document.createElement("div");
+          empty.className = "empty";
+          empty.textContent = "Empty";
+          list.appendChild(empty);
+        }
+        section.appendChild(list);
+        return section;
+      }
+
+      // A deep-linked story has to be *scrolled to*, not merely selected. render()
+      // restores panesEl.scrollLeft after rebuilding the panes, which cancelled the scroll
+      // below and left the target card correctly selected but off-screen to the right.
+      // Flipping a flag when the scroll is *issued* is not enough: a render already in
+      // flight captured the old scrollLeft and restores it afterwards. So while a deep
+      // link is active the deep link owns horizontal position outright, and gives it up
+      // the moment the user scrolls or clicks.
+      let deepLinkDismissed = false;
+
+      function deepLinkId() {
+        const params = new URLSearchParams(location.search || location.hash.replace(/^#/, "?"));
+        return params.get("id") || params.get("tid") || params.get("storyId");
+      }
+
+      function deepLinkOwnsScroll() {
+        const id = deepLinkId();
+        return Boolean(id) && !deepLinkDismissed && Boolean(document.getElementById(id));
+      }
+
+      function dismissDeepLinkScroll() {
+        deepLinkDismissed = true;
+      }
+
+      // Armed only after the deep-linked card is actually on screen. Arming at page load
+      // instead meant a stray event during startup cancelled the scroll before it ran.
+      let deepLinkDismissalArmed = false;
+      function armDeepLinkDismissal() {
+        if (deepLinkDismissalArmed) return;
+        deepLinkDismissalArmed = true;
+        ["wheel", "pointerdown", "touchstart"].forEach((evt) => {
+          window.addEventListener(evt, dismissDeepLinkScroll, { passive: true, once: true });
+        });
+      }
+
+      function highlightDeepLink() {
+        document.querySelectorAll(".task-card.highlight").forEach((el) => {
+          el.classList.remove("highlight");
+        });
+        const id = deepLinkId();
+        if (!id) return;
+        // Scroll until the card is genuinely on screen, rather than once and hopefully.
+        // A single attempt is unreliable: at first paint the panes are still being laid
+        // out, so an early scrollIntoView aims at a stale position, and a render landing
+        // afterwards restores the old offset. Retry across frames until the card is in
+        // view, the user takes over, or we give up.
+        let attempts = 0;
+        const settle = () => {
+          if (deepLinkDismissed || attempts++ > 40) return;
+          const target = document.getElementById(id);
+          if (!target) {
+            requestAnimationFrame(settle);
+            return;
+          }
+          target.classList.add("highlight");
+          const box = target.getBoundingClientRect();
+          const onScreen = box.left >= 0 && box.right <= window.innerWidth
+            && box.top >= 0 && box.bottom <= window.innerHeight;
+          if (onScreen) {
+            armDeepLinkDismissal();
+            return;
+          }
+          // "auto", not "smooth": a smooth scroll animates across later frames, and any
+          // render landing mid-animation cancels it before it arrives.
+          target.scrollIntoView({ behavior: "auto", block: "center", inline: "center" });
+          requestAnimationFrame(settle);
+        };
+        requestAnimationFrame(settle);
+      }
+
+      function processDeepLink() {
+        const params = new URLSearchParams(location.search || location.hash.replace(/^#/, "?"));
+        const id = deepLinkId();
+        if (id) {
+          deepLinkDismissed = false;
+          const tasks = window.todoData.tasks || [];
+          const task = tasks.find(t => t.task_id === id);
+          if (task) {
+            const statusOverrides = FocusLogic.loadStatusOverrides();
+            const status = FocusLogic.getEffectiveStatus(task, statusOverrides);
+            const paneDef = PivotalState.paneDefs.find(p => p.status === status);
+            if (paneDef) {
+              PS.paneVisibility[paneDef.id] = true;
+              PivotalState.savePaneVisibility(PS.paneVisibility);
+            }
+            PS.selectedTaskId = id;
+          }
+        }
+        const epic = params.get("epic");
+        if (epic) {
+          const epics = epic.split(/[\s,]+/);
+          for (const tag of epics) {
+            const clean = tag.replace(/^#/, "");
+            if (window.todoData.epic_meta && window.todoData.epic_meta[clean]) {
+              PS.selectedEpic = clean;
+              PS.focusEpic = clean;
+              break;
+            }
+          }
+        }
+        const focus = params.get("focus");
+        if (focus) {
+          const clean = focus.replace(/^#/, "");
+          if (window.todoData.epic_meta && window.todoData.epic_meta[clean]) {
+            PS.focusEpic = clean;
+          }
+        }
+      }
+
+      function render() {
+        if (window.PivotalDND && PivotalDND.isDragActive()) {
+          PivotalDND.deferRender(render);
+          return;
+        }
+        PS.allTasks = window.todoData.tasks || [];
+        const statusOverrides = FocusLogic.loadStatusOverrides();
+        const textOverrides = IceboxLogic.loadTextOverrides();
+        const tagOverrides = FocusLogic.loadTagOverrides();
+        renderPortfolioFilter(tagOverrides);
+        renderEpicFilter(tagOverrides);
+        renderDirFilter(tagOverrides);
+        if (PS.focusEpic && PS.selectedEpic !== PS.focusEpic) PS.focusEpic = null;
+        renderToggles();
+        const scrollPositions = new Map();
+        panesEl.querySelectorAll(".task-list[data-pane-id]").forEach((list) => {
+          scrollPositions.set(list.dataset.paneId, list.scrollTop);
+        });
+        const prevScrollLeft = panesEl.scrollLeft;
+        panesEl.innerHTML = "";
+        if (PS.focusEpic) {
+          panesEl.appendChild(renderFocusPane(PS.focusEpic, statusOverrides, textOverrides, tagOverrides));
+          PivotalSyncUI.renderStatusBar(document.getElementById("status-bar"));
+          highlightDeepLink();
+          return;
+        }
+        // On mobile the board is a swipe carousel with no per-pane close, so
+        // every pane is always rendered (ignoring stored visibility, which can
+        // only be toggled on desktop).
+        const paneVisible = (id) => mobileMQ.matches || PS.paneVisibility[id] !== false;
+        if (paneVisible("epics")) panesEl.appendChild(renderEpicPane());
+        renderEpicDetailPanes(statusOverrides, textOverrides, tagOverrides);
+        PivotalState.paneDefs.filter((pane) => pane.id !== "epics" && paneVisible(pane.id)).forEach((pane) => {
+          panesEl.appendChild(renderPane(pane, statusOverrides, textOverrides, tagOverrides));
+        });
+        panesEl.querySelectorAll(".task-list[data-pane-id]").forEach((list) => {
+          const saved = scrollPositions.get(list.dataset.paneId);
+          if (saved) list.scrollTop = saved;
+        });
+        if (!deepLinkOwnsScroll()) panesEl.scrollLeft = prevScrollLeft;
+        if (mobileMQ.matches) updateActiveTab();
+        PivotalSyncUI.renderStatusBar(document.getElementById("status-bar"));
+        highlightDeepLink();
+      }
+
+      function clearFocus() {
+        PS.focusEpic = null;
+        PS.selectedEpic = "all";
+        history.replaceState(null, "", location.pathname + location.hash);
+        render();
+      }
+
+      function renderFocusPane(tag, statusOverrides, textOverrides, tagOverrides) {
+        const epicMeta = window.todoData.epic_meta || {};
+        const tasks = effectiveEpicTasks(tag, statusOverrides, textOverrides, tagOverrides);
+        const queued = IceboxLogic.loadQueue().filter((item) => PivotalData.taskMatchesEpicFilter({ tags: item.tags || [] }, tag, epicMeta));
+        const total = tasks.length + queued.length;
+
+        const focusPane = document.createElement("section");
+        focusPane.className = "pane epic-story-pane focus-pane";
+        focusPane.dataset.testid = "focus-pane";
+        focusPane.dataset.paneId = "focus";
+        focusPane.dataset.epic = tag;
+        focusPane.appendChild(renderPaneHeader(
+          { id: "focus", label: `#${tag}` },
+          total,
+          clearFocus
+        ));
+        focusPane.appendChild(renderEpicQuickAdd(tag));
+
+        const storyList = document.createElement("div");
+        storyList.className = "task-list epic-story-list";
+        storyList.dataset.testid = "focus-stories";
+
+        const ranked = FocusLogic.rankTasksForPane([...queued, ...tasks], `epic-${tag}`);
+        const isDoneItem = (item) => (item.task_id
+          ? FocusLogic.getEffectiveStatus(item, statusOverrides)
+          : (item.status || "Pending")) === "Done";
+        const displayItems = [
+          ...ranked.filter((item) => !isDoneItem(item)),
+          ...ranked.filter((item) => isDoneItem(item)),
+        ];
+
+        displayItems.forEach((item) => {
+          if (!item.task_id) {
+            const card = document.createElement("article");
+            card.className = "task-card";
+            card.dataset.status = item.status || "Pending";
+            card.innerHTML = queuedRowHTML(item, `<span class="epic-chip" style="background:${FocusLogic.epicColorFor(tag, epicMeta)}">#${PivotalUtils.escapeHTML(tag)}</span>`);
+            storyList.appendChild(card);
+            return;
+          }
+          storyList.appendChild(renderTask(item, statusOverrides, textOverrides, tagOverrides));
+        });
+
+        if (!total) {
+          const empty = document.createElement("div");
+          empty.className = "empty";
+          empty.textContent = "No stories";
+          storyList.appendChild(empty);
+        }
+        focusPane.appendChild(storyList);
+        return focusPane;
+      }
+
+      let searchTimer = null;
+      searchEl.addEventListener("input", () => {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(() => {
+          PS.query = searchEl.value.trim();
+          render();
+        }, 160);
+      });
+
+      // Shared by the dropdown and the digit-key shortcuts.
+      function selectPortfolio(id) {
+        PS.selectedPortfolio = id;
+        // The epic list is scoped to the portfolio, so a held-over epic would
+        // usually filter everything out.
+        PS.selectedEpic = "all";
+        PS.focusEpic = null;
+        render();
+      }
+
+      portfolioFilterEl.addEventListener("change", () => {
+        selectPortfolio(portfolioFilterEl.value);
+      });
+
+      epicFilterEl.addEventListener("change", () => {
+        PS.selectedEpic = epicFilterEl.value;
+        PS.focusEpic = window.todoData.epic_meta && window.todoData.epic_meta[PS.selectedEpic]
+          ? PS.selectedEpic
+          : null;
+        render();
+      });
+
+      dirFilterEl.addEventListener("change", () => {
+        PS.selectedDir = dirFilterEl.value;
+        render();
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (["INPUT", "TEXTAREA", "SELECT"].includes(e.target.tagName) || e.target.isContentEditable) {
+          return;
+        }
+        if (e.key === "a" && !e.ctrlKey && !e.metaKey && !e.altKey) {
+          e.preventDefault();
+          const iceboxPane = document.querySelector('.pane[data-pane-id="icebox"]');
+          if (iceboxPane) {
+            const input = iceboxPane.querySelector('.quick-add input');
+            if (input) {
+              input.focus();
+            }
+          }
+        }
+        if (e.key === "e" && !e.ctrlKey && !e.metaKey && !e.altKey) {
+          e.preventDefault();
+          epicComposerOpen = true;
+          render();
+          const tagInput = panesEl.querySelector('[data-testid="epic-composer-tag"]');
+          if (tagInput) tagInput.focus();
+        }
+        if (e.key === "n" && !e.ctrlKey && !e.metaKey && !e.altKey && PS.selectedTaskId) {
+          const card = document.getElementById(PS.selectedTaskId);
+          if (card && typeof card.openNotes === "function") {
+            e.preventDefault();
+            card.openNotes();
+          }
+        }
+        if (e.key === "Escape" && PS.selectedTaskId && !(window.PivotalDND && PivotalDND.isDragActive())) {
+          PS.selectedTaskId = null;
+          render();
+        }
+        // Each portfolio owns a digit (0 = all portfolios); unbound digits do nothing.
+        if (/^[0-9]$/.test(e.key) && !e.ctrlKey && !e.metaKey && !e.altKey) {
+          const target = PivotalData.resolvePortfolioShortcut(e.key, portfolioData());
+          if (target) {
+            e.preventDefault();
+            selectPortfolio(target);
+          }
+        }
+      });
+
+      // Clicking blank space outside any card collapses the expanded story.
+      document.addEventListener("click", (event) => {
+        if (!PS.selectedTaskId) return;
+        if (event.target.closest(".task-card, .tag-autocomplete, #prefs-menu")) return;
+        PS.selectedTaskId = null;
+        render();
+      });
+
+      window.addEventListener("hashchange", () => {
+        processDeepLink();
+        render();
+      });
+
+      const prefsToggle = document.getElementById("prefs-toggle");
+      const prefsMenu = document.getElementById("prefs-menu");
+      prefsMenu.addEventListener("click", (event) => event.stopPropagation());
+      prefsMenu.querySelectorAll('input[name="default-agent"]').forEach((radio) => {
+        radio.checked = radio.value === getDefaultAgent();
+        radio.addEventListener("change", () => {
+          localStorage.setItem("pivotalDefaultAgent", radio.value);
+          render();
+        });
+      });
+      prefsToggle.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const opening = prefsMenu.hidden;
+        prefsMenu.hidden = !opening;
+        prefsToggle.setAttribute("aria-expanded", String(opening));
+        if (opening) {
+          setTimeout(() => {
+            document.addEventListener("click", function close(evt) {
+              if (!prefsMenu.contains(evt.target)) {
+                prefsMenu.hidden = true;
+                prefsToggle.setAttribute("aria-expanded", "false");
+                document.removeEventListener("click", close);
+              }
+            });
+          }, 0);
+        }
+      });
+
+      const dataToggle = document.getElementById("data-toggle");
+      const dataMenu = document.getElementById("data-menu");
+      const dataStatus = document.getElementById("data-status");
+      dataMenu.addEventListener("click", (event) => event.stopPropagation());
+      dataToggle.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const opening = dataMenu.hidden;
+        dataMenu.hidden = !opening;
+        dataToggle.setAttribute("aria-expanded", String(opening));
+        if (opening) {
+          setTimeout(() => {
+            document.addEventListener("click", function close(evt) {
+              if (!dataMenu.contains(evt.target)) {
+                dataMenu.hidden = true;
+                dataToggle.setAttribute("aria-expanded", "false");
+                document.removeEventListener("click", close);
+              }
+            });
+          }, 0);
+        }
+      });
+      document.getElementById("export-backup").addEventListener("click", () => {
+        window.location.href = "/api/export";
+        dataStatus.textContent = "Export started…";
+      });
+      const importFileInput = document.getElementById("import-file-input");
+      document.getElementById("import-backup").addEventListener("click", () => importFileInput.click());
+      importFileInput.addEventListener("change", async () => {
+        const file = importFileInput.files[0];
+        if (!file) return;
+        dataStatus.textContent = "Importing…";
+        try {
+          const formData = new FormData();
+          formData.append("file", file);
+          const res = await fetch("/api/import", { method: "POST", body: formData });
+          const payload = await res.json();
+          if (!res.ok) throw new Error(payload.error || "Import failed");
+          dataStatus.textContent = `Imported ${payload.imported.length} files`;
+          await PivotalSyncUI.reloadDataFile();
+          render();
+        } catch (err) {
+          dataStatus.textContent = `Error: ${err.message}`;
+        } finally {
+          importFileInput.value = "";
+        }
+      });
+
+      const newHereBanner = document.getElementById("new-here-banner");
+      const dismissBanner = document.getElementById("dismiss-banner");
+      if (newHereBanner && !localStorage.getItem("pivotalNewHereDismissed")) {
+        newHereBanner.hidden = false;
+      }
+      if (dismissBanner) {
+        dismissBanner.addEventListener("click", () => {
+          newHereBanner.hidden = true;
+          localStorage.setItem("pivotalNewHereDismissed", "1");
+        });
+      }
+
+      // --- Mobile: swipe carousel + collapsible secondary controls ---
+      const mobileMQ = window.matchMedia("(max-width: 760px)");
+      function scrollToPane(id, smooth) {
+        const el = panesEl.querySelector(`.pane[data-pane-id="${id}"]`);
+        if (el) el.scrollIntoView({ behavior: smooth === false ? "auto" : "smooth", inline: "start", block: "nearest" });
+      }
+      function updateActiveTab() {
+        const panes = Array.from(panesEl.querySelectorAll(".pane[data-pane-id]"));
+        if (!panes.length) return;
+        const cont = panesEl.getBoundingClientRect();
+        const centerX = cont.left + cont.width / 2;
+        let activeId = panes[0].dataset.paneId;
+        for (const p of panes) {
+          const r = p.getBoundingClientRect();
+          if (r.left <= centerX && r.right > centerX) { activeId = p.dataset.paneId; break; }
+        }
+        togglesEl.querySelectorAll("button").forEach((b) => {
+          b.classList.toggle("is-active", b.dataset.paneId === activeId);
+        });
+      }
+      let activeTabRAF = 0;
+      panesEl.addEventListener("scroll", () => {
+        if (!mobileMQ.matches) return;
+        cancelAnimationFrame(activeTabRAF);
+        activeTabRAF = requestAnimationFrame(updateActiveTab);
+      });
+      const mobileMenuBtn = document.getElementById("mobile-menu");
+      const headerEl = document.querySelector("header");
+      if (mobileMenuBtn && headerEl) {
+        mobileMenuBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const open = headerEl.classList.toggle("menu-open");
+          mobileMenuBtn.setAttribute("aria-expanded", String(open));
+        });
+        document.addEventListener("click", (e) => {
+          if (headerEl.classList.contains("menu-open") && !e.target.closest("header")) {
+            headerEl.classList.remove("menu-open");
+            mobileMenuBtn.setAttribute("aria-expanded", "false");
+          }
+        });
+      }
+
+      PS.render = render;
+      PivotalSyncUI.setRenderFn(render);
+      processDeepLink();
+      render();
+      // First load on mobile: start the carousel on Icebox (the "New here?"
+      // start-here card), not the Epics summary lane.
+      if (mobileMQ.matches) {
+        requestAnimationFrame(() => { scrollToPane("icebox", false); updateActiveTab(); });
+      }
+    })();
+  </script>
+</body>
+</html>

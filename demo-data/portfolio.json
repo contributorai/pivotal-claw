@@ -1,0 +1,38 @@
+{
+  "items": [
+    {
+      "id": "build_the_board",
+      "name": "Build the board",
+      "shortcut": "1",
+      "color": "3977E9",
+      "description": "The Kanban surface and the HTTP API behind it — everything a human clicks and an agent calls.",
+      "epic_tags": [
+        "board",
+        "agent_api"
+      ],
+      "focus": true
+    },
+    {
+      "id": "plan_the_work",
+      "name": "Plan the work",
+      "shortcut": "2",
+      "color": "27AE60",
+      "description": "Higher-level planning views that roll epics up into initiatives.",
+      "epic_tags": [
+        "portfolio"
+      ],
+      "focus": true
+    },
+    {
+      "id": "onboarding",
+      "name": "Onboarding",
+      "shortcut": "3",
+      "color": "F2994A",
+      "description": "First-run experience: the guided cards and the agent setup flow that teach a newcomer the board.",
+      "epic_tags": [
+        "start_here"
+      ],
+      "focus": false
+    }
+  ]
+}

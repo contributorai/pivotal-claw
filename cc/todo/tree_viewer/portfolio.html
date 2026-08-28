@@ -1,0 +1,908 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pivotal — Portfolios</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --hue-blue: 215;
+      --hue-orange: 35;
+      --hue-green: 142;
+      --hue-purple: 271;
+
+      --blue: hsl(var(--hue-blue), 90%, 55%);
+      --orange: hsl(var(--hue-orange), 95%, 50%);
+      --green: hsl(var(--hue-green), 76%, 40%);
+      --purple: hsl(var(--hue-purple), 76%, 58%);
+      --red: hsl(0, 84%, 60%);
+
+      --page-bg: #f4f6fa;
+      --card-bg: #ffffff;
+      --pane-bg: #eaecf2;
+      --ink: #1e293b;
+      --muted: #64748b;
+      --line: #cbd5e1;
+
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.02);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+      --transition-fast: 0.15s ease;
+
+      --strong-bg: var(--ink);
+      --header-bg: rgba(255, 255, 255, 0.85);
+      --surface-hover: #f8fafc;
+      --surface-alt: #fafbfe;
+      --border-soft: rgba(226, 232, 240, 0.8);
+      --track-bg: #e2e8f0;
+    }
+
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --page-bg: #16181d;
+      --card-bg: #20242c;
+      --pane-bg: #1c1f26;
+      --ink: #e7e9ee;
+      --muted: #8b909c;
+      --line: #2a2e37;
+
+      --blue: hsl(var(--hue-blue), 90%, 64%);
+      --orange: hsl(var(--hue-orange), 95%, 58%);
+      --green: hsl(var(--hue-green), 55%, 55%);
+      --purple: hsl(var(--hue-purple), 76%, 68%);
+      --red: hsl(0, 84%, 66%);
+
+      --strong-bg: #0d0f13;
+      --header-bg: rgba(22, 24, 29, 0.85);
+      --surface-hover: #262b34;
+      --surface-alt: #191c22;
+      --border-soft: rgba(255,255,255,0.08);
+      --track-bg: #2c313b;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--page-bg);
+      color: var(--ink);
+      font-family: 'Inter', -apple-system, sans-serif;
+      font-size: 13px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 20px;
+      background: var(--header-bg);
+      border-bottom: 1px solid var(--border-soft);
+      backdrop-filter: blur(12px);
+    }
+
+    .logo {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      background: linear-gradient(135deg, var(--blue) 0%, var(--purple) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    header a.back {
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 12.5px;
+    }
+    header a.back:hover { color: var(--ink); }
+
+    header h1 {
+      font-size: 14px;
+      font-weight: 600;
+      margin: 0;
+      flex: 1;
+    }
+
+    button {
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      height: 32px;
+      width: 32px;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--card-bg);
+      color: var(--ink);
+      cursor: pointer;
+    }
+    button:hover { background: var(--surface-hover); }
+
+    main {
+      padding: 20px;
+    }
+
+    .portfolios {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 12px;
+      align-items: start;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    /* display:grid outranks the hidden attribute's UA rule, so say it here. */
+    .portfolios[hidden] { display: none; }
+
+    .portfolio {
+      background: var(--pane-bg);
+      border: 1px solid var(--border-soft);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .portfolio.focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 1px var(--blue), var(--shadow-sm);
+    }
+
+    .portfolio.dim { opacity: 0.6; }
+
+    /* Retired portfolios cost one line until opened. */
+    details.archived {
+      max-width: 1400px;
+      margin: 16px auto 0;
+    }
+
+    details.archived > summary {
+      cursor: pointer;
+      list-style: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border: 1px solid var(--border-soft);
+      border-radius: 8px;
+      background: var(--pane-bg);
+      color: var(--muted);
+      font-size: 12px;
+      user-select: none;
+    }
+
+    details.archived > summary::-webkit-details-marker { display: none; }
+    details.archived > summary::before { content: "▸"; font-size: 10px; }
+    details.archived[open] > summary::before { content: "▾"; }
+    details.archived > summary:hover { color: var(--ink); border-color: var(--muted); }
+    details.archived > .portfolios { margin-top: 12px; }
+
+    .p-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    .p-name {
+      font-weight: 700;
+      font-size: 12.5px;
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* The digit that switches the board's portfolio filter. Keycap-shaped so it
+       reads as a key to press, not as a count or a rank. */
+    .p-key {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      font-weight: 500;
+      line-height: 1;
+      color: var(--muted);
+      background: var(--surface-alt);
+      border: 1px solid var(--line);
+      border-bottom-width: 2px;
+      border-radius: 4px;
+      padding: 3px 5px;
+      flex-shrink: 0;
+    }
+
+    .focus-chip {
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--blue);
+      border: 1px solid var(--blue);
+      border-radius: 3px;
+      padding: 1px 5px;
+    }
+
+    .p-count {
+      color: var(--muted);
+      font-size: 11px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .epic-group {
+      border-bottom: 1px solid var(--border-soft);
+    }
+    .epic-group:last-child { border-bottom: none; }
+
+    .epic-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      cursor: pointer;
+    }
+    .epic-row:hover { background: var(--surface-hover); }
+    .epic-row.open { background: var(--surface-hover); }
+
+    .chevron {
+      width: 10px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 10px;
+      transition: transform var(--transition-fast);
+      flex-shrink: 0;
+    }
+    .epic-row.open .chevron { transform: rotate(90deg); }
+
+    .epic-detail {
+      display: none;
+      padding: 8px 12px 12px 30px;
+      background: var(--surface-alt);
+      font-size: 11.5px;
+    }
+    .epic-detail.open { display: block; }
+    .epic-detail .stories { display: grid; gap: 4px; margin: 6px 0 8px; }
+    .epic-detail .story {
+      padding: 4px 8px;
+      background: var(--card-bg);
+      border-radius: 5px;
+      border-left: 2px solid var(--track-bg);
+    }
+    .epic-detail .story.doing { border-left-color: var(--orange); }
+    .epic-detail .story.done { border-left-color: var(--green); color: var(--muted); text-decoration: line-through; }
+    .epic-detail .no-stories { color: var(--muted); }
+    .epic-detail a.open-board { color: var(--blue); text-decoration: none; font-size: 11px; }
+    .epic-detail a.open-board:hover { text-decoration: underline; }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .epic-name {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 12px;
+    }
+
+    .bar-track {
+      width: 64px;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--track-bg);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .bar-fill {
+      /* A bare span is inline, and inline boxes ignore height — without this the
+         fill never draws and every bar reads as 0%. */
+      display: block;
+      height: 100%;
+      border-radius: 2px;
+      background: var(--green);
+    }
+
+    .epic-count {
+      width: 34px;
+      text-align: right;
+      color: var(--muted);
+      font-size: 11px;
+      font-variant-numeric: tabular-nums;
+      flex-shrink: 0;
+    }
+
+    .hint {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--muted);
+      font-size: 11.5px;
+      white-space: nowrap;
+    }
+    .hint[hidden] { display: none; }
+
+    /* Mode toggle: one segmented control, so the two views read as one page
+       in two states rather than two pages. */
+    .modes {
+      display: inline-flex;
+      gap: 2px;
+      padding: 2px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface-alt);
+    }
+    .modes[hidden] { display: none; }
+
+    .modes button {
+      width: auto;
+      height: 24px;
+      padding: 0 10px;
+      border: none;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .modes button:hover { background: var(--surface-hover); color: var(--ink); }
+    .modes button.on {
+      background: var(--card-bg);
+      color: var(--ink);
+      box-shadow: var(--shadow-sm);
+    }
+
+    #collapse-all {
+      width: auto;
+      height: 26px;
+      padding: 0 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    #collapse-all:hover { color: var(--ink); }
+    #collapse-all[hidden] { display: none; }
+
+    .rank-status {
+      color: var(--muted);
+      font-size: 11px;
+      min-width: 92px;
+      text-align: right;
+    }
+
+    /* --- stack rank ------------------------------------------------------
+       One ranked column: portfolios in priority order, each epic ranked
+       beneath its portfolio (1, 1.1, 1.2). Order is the array order in
+       portfolio.json, so a drag is a write. */
+    .stack {
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .stack[hidden] { display: none; }
+    .stack.reordering, .stack-epics.reordering { cursor: grabbing; }
+
+    .stack-block {
+      background: var(--pane-bg);
+      border: 1px solid var(--border-soft);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .stack-block.focus { border-color: var(--blue); }
+    .stack-block.dragging {
+      opacity: 0.9;
+      box-shadow: var(--shadow-md);
+      border-color: var(--blue);
+    }
+
+    .stack-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 10px;
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border-soft);
+      cursor: pointer;
+    }
+    .stack-row:hover { background: var(--surface-hover); }
+
+    /* Collapsed, a portfolio costs exactly one line and keeps its whole summary:
+       rank, name, progress, count, key. Only the epic list goes. */
+    .stack-block.collapsed .stack-epics { display: none; }
+    /* The cards-mode rule keys off .epic-row.open, which stack rows don't use;
+       here the block's own collapsed state drives the disclosure. */
+    .stack-block:not(.collapsed) > .stack-row > .chevron { transform: rotate(90deg); }
+    .stack-block.collapsed .stack-row { border-bottom: none; }
+
+    .grip {
+      color: var(--muted);
+      opacity: 0.45;
+      font-size: 12px;
+      line-height: 1;
+      cursor: grab;
+      flex-shrink: 0;
+      padding: 2px 1px;
+      touch-action: none;
+      user-select: none;
+    }
+    .grip:hover { opacity: 1; }
+    /* The row is clickable, the grip is draggable — the handle wins over the
+       row's pointer cursor. */
+    .stack-row > .grip { cursor: grab; }
+    .dragging .grip { cursor: grabbing; }
+
+    /* Rank digits are the spine of this view: monospace and right-aligned so
+       1 and 10 line up, and clearly not the keycap digit next to them. */
+    .rank, .sub-rank {
+      font-family: 'JetBrains Mono', monospace;
+      font-variant-numeric: tabular-nums;
+      color: var(--muted);
+      flex-shrink: 0;
+      text-align: right;
+    }
+    .rank { width: 18px; font-size: 12px; font-weight: 600; color: var(--ink); }
+    .sub-rank { width: 30px; font-size: 10.5px; }
+
+    .p-bar {
+      width: 3px;
+      height: 14px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .stack-epics { background: var(--surface-alt); }
+
+    .stack-epic {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px 4px 22px;
+      border-top: 1px solid var(--border-soft);
+    }
+    .stack-epic:first-child { border-top: none; }
+    .stack-epic:hover { background: var(--surface-hover); }
+    .stack-epic.dragging { background: var(--surface-hover); opacity: 0.9; }
+    .stack-epic a.epic-name { color: inherit; text-decoration: none; }
+    .stack-epic a.epic-name:hover { color: var(--blue); text-decoration: underline; }
+
+    .stack-empty {
+      padding: 5px 10px 5px 32px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .empty {
+      color: var(--muted);
+      text-align: center;
+      padding: 24px 12px;
+    }
+  </style>
+  <script>
+    (function () {
+      if (localStorage.getItem("pivotalTheme") === "dark") {
+        document.documentElement.setAttribute("data-theme", "dark");
+      }
+    })();
+  </script>
+</head>
+<body>
+  <header>
+    <span class="logo">Pivotal</span>
+    <a class="back" href="/">&larr; Board</a>
+    <h1>Portfolios</h1>
+    <div class="modes" id="portfolio-mode" data-testid="portfolio-mode" role="tablist">
+      <button type="button" class="mode" data-mode="cards" role="tab" aria-selected="true">Cards</button>
+      <button type="button" class="mode" data-mode="stack" role="tab" aria-selected="false">Stack rank</button>
+    </div>
+    <button type="button" id="collapse-all" data-testid="collapse-all"></button>
+    <span id="rank-status" class="rank-status" aria-live="polite"></span>
+    <span id="shortcut-hint" class="hint" hidden>Press <span class="p-key">1</span>–<span class="p-key">9</span> on the board to filter, <span class="p-key">0</span> for all</span>
+    <button id="theme-toggle" type="button" aria-pressed="false" title="Toggle dark mode">🌙</button>
+  </header>
+  <main>
+    <div id="portfolios" class="portfolios"></div>
+    <div id="stack" class="stack" data-testid="portfolio-stack" hidden></div>
+  </main>
+
+  <script src="/todo_data.js" data-todo-data></script>
+  <script src="focusLogic.js"></script>
+  <script src="pivotalData.js"></script>
+  <script src="portfolioRank.js"></script>
+  <script>
+    (function () {
+      const btn = document.getElementById("theme-toggle");
+      function applyTheme(theme) {
+        if (theme === "dark") {
+          document.documentElement.setAttribute("data-theme", "dark");
+          btn.setAttribute("aria-pressed", "true");
+          btn.textContent = "☀️";
+        } else {
+          document.documentElement.removeAttribute("data-theme");
+          btn.setAttribute("aria-pressed", "false");
+          btn.textContent = "🌙";
+        }
+      }
+      applyTheme(localStorage.getItem("pivotalTheme") === "dark" ? "dark" : "light");
+      btn.addEventListener("click", function () {
+        const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        localStorage.setItem("pivotalTheme", next);
+        applyTheme(next);
+      });
+    })();
+
+    (function () {
+      const epicMeta = (window.todoData && window.todoData.epic_meta) || {};
+      const tasks = (window.todoData && window.todoData.tasks) || [];
+      const portfolioItems = ((window.todoData && window.todoData.portfolio_data) || {}).items || [];
+      const epicCounts = PivotalData.countTasksByEpicStatus(tasks, epicMeta, {});
+      const allFlat = PivotalData.getAllFlat(tasks);
+      const container = document.getElementById("portfolios");
+      const MAX_STORIES_SHOWN = 6;
+
+      const stack = document.getElementById("stack");
+      const modes = document.getElementById("portfolio-mode");
+      const rankStatus = document.getElementById("rank-status");
+      const collapseAllBtn = document.getElementById("collapse-all");
+
+      if (!portfolioItems.length) {
+        container.innerHTML = '<div class="empty">No portfolios defined yet in portfolio.json</div>';
+        modes.hidden = true;
+        return;
+      }
+
+      function escapeHtml(text) {
+        const div = document.createElement("div");
+        div.textContent = String(text == null ? "" : text);
+        return div.innerHTML;
+      }
+
+      function storiesForEpic(tag) {
+        return allFlat
+          .filter((task) => PivotalData.getTaskEpicTags(task, epicMeta).includes(tag))
+          .map((task) => {
+            const status = task.status === "Done" ? "done" : task.status === "In progress" ? "doing" : "";
+            return { text: task.display_text || task.text, status };
+          })
+          .sort((a, b) => (a.status === "done") - (b.status === "done"));
+      }
+
+      function renderDetail(tag) {
+        const stories = storiesForEpic(tag);
+        if (!stories.length) {
+          return '<div class="no-stories">No stories tagged yet.</div>';
+        }
+        const shown = stories.slice(0, MAX_STORIES_SHOWN);
+        const remainder = stories.length - shown.length;
+        const rows = shown
+          .map((s) => `<div class="story ${s.status}">${escapeHtml(s.text)}</div>`)
+          .join("");
+        const more = remainder > 0 ? `<div class="no-stories">+${remainder} more</div>` : "";
+        return `<div class="stories">${rows}${more}</div>`;
+      }
+
+      function renderCard(item) {
+        const epicTags = item.epic_tags || [];
+        let total = 0, done = 0;
+        epicTags.forEach((tag) => {
+          const c = epicCounts[tag];
+          if (c) { total += c.total; done += c.done; }
+        });
+
+        const card = document.createElement("div");
+        card.className = "portfolio" + (item.focus ? " focus" : (total === 0 ? "" : " dim"));
+
+        // An archived portfolio keeps its digit reserved in portfolio.json, but the key
+        // is inert on the board — so, as in the board dropdown, only active portfolios
+        // advertise one.
+        const shortcut = item.archived ? "" : String(item.shortcut || "");
+
+        const head = document.createElement("div");
+        head.className = "p-head";
+        head.innerHTML = `
+          ${shortcut ? `<span class="p-key" title="Press ${escapeHtml(shortcut)} on the board to filter to this portfolio">${escapeHtml(shortcut)}</span>` : ""}
+          <span class="p-name">${escapeHtml(item.name || item.id)}</span>
+          ${item.focus ? '<span class="focus-chip">FOCUS</span>' : ""}
+          <span class="p-count">${done}/${total}</span>
+        `;
+        card.appendChild(head);
+
+        epicTags.forEach((tag) => {
+          const meta = epicMeta[tag] || {};
+          const c = epicCounts[tag] || { total: 0, done: 0 };
+          const pct = c.total ? Math.round((c.done / c.total) * 100) : 0;
+
+          const group = document.createElement("div");
+          group.className = "epic-group";
+
+          const row = document.createElement("div");
+          row.className = "epic-row";
+          row.innerHTML = `
+            <span class="dot" style="background:#${meta.color || "888888"}"></span>
+            <span class="epic-name">${escapeHtml(tag)}</span>
+            <span class="bar-track"><span class="bar-fill" style="width:${pct}%"></span></span>
+            <span class="epic-count">${c.done}/${c.total}</span>
+            <span class="chevron">▸</span>
+          `;
+
+          const detail = document.createElement("div");
+          detail.className = "epic-detail";
+          detail.innerHTML = renderDetail(tag) + `<a class="open-board" href="/?focus=${encodeURIComponent(tag)}">Open full epic on board &rarr;</a>`;
+
+          row.addEventListener("click", () => {
+            const isOpen = row.classList.toggle("open");
+            detail.classList.toggle("open", isOpen);
+          });
+
+          group.appendChild(row);
+          group.appendChild(detail);
+          card.appendChild(group);
+        });
+
+        return card;
+      }
+
+      container.innerHTML = "";
+      const active = portfolioItems.filter((item) => !item.archived);
+
+      // No point explaining the digit keys when nothing has claimed one yet.
+      if (active.some((item) => item.shortcut)) {
+        document.getElementById("shortcut-hint").hidden = false;
+      }
+
+      const archived = portfolioItems.filter((item) => item.archived);
+
+      active.forEach((item) => container.appendChild(renderCard(item)));
+
+      // Archived portfolios collapse to a single line so they cost almost no space,
+      // but stay reachable — the CLI is not the only way to find them. They sit
+      // outside both modes: a retired portfolio has no rank.
+      if (archived.length) {
+        const details = document.createElement("details");
+        details.className = "archived";
+        details.dataset.testid = "archived-portfolios";
+        const summary = document.createElement("summary");
+        summary.textContent = `Archived (${archived.length})`;
+        details.appendChild(summary);
+
+        const grid = document.createElement("div");
+        grid.className = "portfolios";
+        archived.forEach((item) => grid.appendChild(renderCard(item)));
+        details.appendChild(grid);
+
+        container.parentNode.appendChild(details);
+      }
+
+      // --- stack rank ----------------------------------------------------
+      // Rank is array order in portfolio.json — portfolios in `items`, epics in
+      // each portfolio's `epic_tags` — so dropping a row is a write, not a
+      // client-side preference.
+
+      function pct(done, total) {
+        return total ? Math.round((done / total) * 100) : 0;
+      }
+
+      function save(payload) {
+        rankStatus.textContent = "Saving…";
+        fetch("/api/portfolio/reorder", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        })
+          .then((response) => {
+            if (!response.ok) throw new Error("reorder rejected");
+            rankStatus.textContent = "Ranked";
+          })
+          .catch(() => {
+            // The DOM already shows the new order; say so plainly rather than
+            // silently letting the page disagree with the file.
+            rankStatus.textContent = "Save failed — reload";
+          });
+      }
+
+      // Ranks are positional, so they are rewritten on every move rather than
+      // baked into the row at build time.
+      function renumber() {
+        Array.from(stack.querySelectorAll(":scope > .stack-block")).forEach((block, i) => {
+          block.querySelector(".rank").textContent = String(i + 1);
+          Array.from(block.querySelectorAll(".stack-epic")).forEach((row, j) => {
+            row.querySelector(".sub-rank").textContent = `${i + 1}.${j + 1}`;
+          });
+        });
+      }
+
+      // Which portfolios are collapsed is a viewing preference, not board data —
+      // it lives per browser, like the theme and the mode itself. Rank is the
+      // opposite: shared, so it goes in portfolio.json.
+      const COLLAPSED_KEY = "pivotalPortfolioCollapsed";
+
+      function readCollapsed() {
+        try {
+          const stored = JSON.parse(localStorage.getItem(COLLAPSED_KEY) || "[]");
+          return new Set(Array.isArray(stored) ? stored : []);
+        } catch (err) {
+          // A corrupt value must not take the page down with it.
+          return new Set();
+        }
+      }
+
+      function writeCollapsed(ids) {
+        try {
+          localStorage.setItem(COLLAPSED_KEY, JSON.stringify(Array.from(ids)));
+        } catch (err) {
+          /* private mode or a full quota: the page still works, it just forgets */
+        }
+      }
+
+      const collapsedIds = readCollapsed();
+
+      // One write path for the row click, the collapse-all button and the initial
+      // render, so the class, the stored set and the button label cannot drift.
+      function setCollapsed(block, collapsed) {
+        block.classList.toggle("collapsed", collapsed);
+        const head = block.querySelector(".stack-row");
+        head.setAttribute("aria-expanded", String(!collapsed));
+        if (collapsed) {
+          collapsedIds.add(block.dataset.rankId);
+        } else {
+          collapsedIds.delete(block.dataset.rankId);
+        }
+        writeCollapsed(collapsedIds);
+        refreshCollapseAll();
+      }
+
+      function stackBlocks() {
+        return Array.from(stack.querySelectorAll(":scope > .stack-block"));
+      }
+
+      // The label names what the button will do, so it has to follow rows that
+      // were toggled by hand — collapsing the last open one flips it to Expand all.
+      function refreshCollapseAll() {
+        const blocks = stackBlocks();
+        const anyOpen = blocks.some((block) => !block.classList.contains("collapsed"));
+        collapseAllBtn.textContent = anyOpen ? "Collapse all" : "Expand all";
+        collapseAllBtn.dataset.action = anyOpen ? "collapse" : "expand";
+      }
+
+      function setAllCollapsed(collapsed) {
+        stackBlocks().forEach((block) => setCollapsed(block, collapsed));
+      }
+
+      function renderStackEpicRow(tag) {
+        const meta = epicMeta[tag] || {};
+        const counts = epicCounts[tag] || { total: 0, done: 0 };
+
+        const row = document.createElement("div");
+        row.className = "stack-epic";
+        row.dataset.rankId = tag;
+        row.innerHTML = `
+          <span class="grip" title="Drag to rank within this portfolio">⠿</span>
+          <span class="sub-rank"></span>
+          <span class="dot" style="background:#${meta.color || "888888"}"></span>
+          <a class="epic-name" href="/?focus=${encodeURIComponent(tag)}" title="Open #${escapeHtml(tag)} on the board">${escapeHtml(tag)}</a>
+          <span class="bar-track"><span class="bar-fill" style="width:${pct(counts.done, counts.total)}%"></span></span>
+          <span class="epic-count">${counts.done}/${counts.total}</span>
+        `;
+        return row;
+      }
+
+      function renderStackRow(item) {
+        const epicTags = item.epic_tags || [];
+        let total = 0, done = 0;
+        epicTags.forEach((tag) => {
+          const counts = epicCounts[tag];
+          if (counts) { total += counts.total; done += counts.done; }
+        });
+
+        const block = document.createElement("div");
+        block.className = "stack-block" + (item.focus ? " focus" : "");
+        block.dataset.rankId = item.id;
+
+        const head = document.createElement("div");
+        head.className = "stack-row";
+        head.setAttribute("role", "button");
+        head.innerHTML = `
+          <span class="grip" title="Drag to rank this portfolio">⠿</span>
+          <span class="chevron">▸</span>
+          <span class="rank"></span>
+          <span class="p-bar" style="background:#${item.color || "888888"}"></span>
+          <span class="p-name">${escapeHtml(item.name || item.id)}</span>
+          ${item.focus ? '<span class="focus-chip">FOCUS</span>' : ""}
+          <span class="bar-track"><span class="bar-fill" style="width:${pct(done, total)}%"></span></span>
+          <span class="p-count">${done}/${total}</span>
+          ${item.shortcut ? `<span class="p-key" title="Press ${escapeHtml(item.shortcut)} on the board to filter to this portfolio">${escapeHtml(item.shortcut)}</span>` : ""}
+        `;
+        block.appendChild(head);
+
+        head.addEventListener("click", (event) => {
+          // The grip drags, epic links navigate, and a click that merely ends a
+          // drag is not a click on the row.
+          if (event.target.closest(".grip")) return;
+          if (event.target.closest("a")) return;
+          if (PortfolioRank.isClickAfterDrag(stack)) return;
+          setCollapsed(block, !block.classList.contains("collapsed"));
+        });
+
+        const epics = document.createElement("div");
+        epics.className = "stack-epics";
+        epics.dataset.portfolioId = item.id;
+        epicTags.forEach((tag) => epics.appendChild(renderStackEpicRow(tag)));
+        if (!epicTags.length) {
+          const empty = document.createElement("div");
+          empty.className = "stack-empty";
+          empty.textContent = "No epics assigned yet";
+          epics.appendChild(empty);
+        }
+        block.appendChild(epics);
+
+        setCollapsed(block, collapsedIds.has(item.id));
+
+        PortfolioRank.attachRowReorder(epics, {
+          rowSelector: ".stack-epic",
+          handleSelector: ".grip",
+          onMove: renumber,
+          onCommit: (tags) => save({ portfolio_id: item.id, epic_tags: tags }),
+        });
+
+        return block;
+      }
+
+      // Archived portfolios are deliberately absent: rank means priority, and a
+      // retired portfolio has none. They stay reachable in the collapsed section.
+      const stackActive = portfolioItems.filter((item) => !item.archived);
+      stackActive.forEach((item) => stack.appendChild(renderStackRow(item)));
+
+      PortfolioRank.attachRowReorder(stack, {
+        rowSelector: ".stack-block",
+        // Only the portfolio row's own grip drags the block; an epic grip below it
+        // must not lift the whole portfolio.
+        handleSelector: ".stack-row > .grip",
+        onMove: renumber,
+        onCommit: (ids) => save({ order: ids }),
+      });
+      renumber();
+      refreshCollapseAll();
+
+      collapseAllBtn.addEventListener("click", () => {
+        setAllCollapsed(collapseAllBtn.dataset.action === "collapse");
+      });
+
+      // --- mode toggle ---------------------------------------------------
+      function applyMode(mode) {
+        const stackMode = mode === "stack";
+        container.hidden = stackMode;
+        stack.hidden = !stackMode;
+        rankStatus.hidden = !stackMode;
+        collapseAllBtn.hidden = !stackMode;
+        Array.from(modes.querySelectorAll("button[data-mode]")).forEach((button) => {
+          const on = (button.dataset.mode === "stack") === stackMode;
+          button.classList.toggle("on", on);
+          button.setAttribute("aria-selected", String(on));
+        });
+        localStorage.setItem("pivotalPortfolioMode", stackMode ? "stack" : "cards");
+      }
+
+      modes.addEventListener("click", (event) => {
+        const button = event.target.closest("button[data-mode]");
+        if (button) applyMode(button.dataset.mode);
+      });
+
+      // ?mode= wins over the remembered choice so a link can point at one view.
+      const modeFromUrl = new URLSearchParams(window.location.search).get("mode");
+      applyMode(modeFromUrl || localStorage.getItem("pivotalPortfolioMode") || "cards");
+    })();
+  </script>
+</body>
+</html>

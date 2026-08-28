@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pivotal Welcome — Direction A (reference)</title>
+<!--
+  PRESERVED PROTOTYPE — not the shipped /welcome (that is welcome.html, direction C).
+  Kept at /welcome-a as a design reference to cherry-pick from later. Standout
+  ideas: the animated live board preview (a card hops Todo → Doing → Done) and
+  the numbered "what your agent will do" stepper with a time estimate.
+  Source: pivotal_claw_new_user_onboarding_test/.../welcome-page/direction-a.html
+  (shared.css inlined here so the page is self-contained).
+-->
+<style>
+  :root {
+    --ink: #172033;
+    --muted: #617086;
+    --line: #dce3ed;
+    --panel: #ffffff;
+    --wash: #f5f7fb;
+    --blue: #3977e9;
+    --blue-dark: #245bc0;
+    --navy: #202a3d;
+    --green: #2d9b67;
+    --purple: #7d61d9;
+    --orange: #df9b4a;
+    --shadow: 0 18px 55px rgba(30, 44, 73, .12);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    color: var(--ink);
+    background: var(--wash);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    line-height: 1.55;
+  }
+  a { color: inherit; }
+  .topbar {
+    min-height: 64px;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    background: rgba(255,255,255,.94);
+    border-bottom: 1px solid var(--line);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(12px);
+  }
+  .brand { font-size: 20px; font-weight: 800; letter-spacing: -.5px; color: var(--blue); text-decoration: none; }
+  .nav { display: flex; gap: 22px; align-items: center; font-size: 14px; color: #536074; }
+  .nav a { text-decoration: none; }
+  .nav a:hover { color: var(--blue); }
+  .nav-right { margin-left: auto; }
+  .review-chip {
+    padding: 6px 10px;
+    border-radius: 999px;
+    color: #536074;
+    background: #eef2f8;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+  }
+  .shell { width: min(1100px, calc(100% - 40px)); margin: 0 auto; }
+  .eyebrow { color: var(--blue); font-weight: 750; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; }
+  h1 { margin: 12px 0 18px; font-size: clamp(42px, 6vw, 70px); line-height: 1.02; letter-spacing: -.045em; }
+  h2 { font-size: clamp(27px, 3.5vw, 39px); line-height: 1.12; letter-spacing: -.03em; }
+  h3 { margin: 0 0 8px; font-size: 18px; }
+  .lead { max-width: 690px; margin: 0; color: var(--muted); font-size: clamp(18px, 2vw, 22px); }
+  .button-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+  .button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    min-height: 48px;
+    padding: 0 19px;
+    border-radius: 9px;
+    border: 1px solid var(--line);
+    background: white;
+    color: var(--ink);
+    font-weight: 750;
+    text-decoration: none;
+    box-shadow: 0 2px 5px rgba(25, 35, 55, .04);
+  }
+  .button.primary { background: var(--blue); border-color: var(--blue); color: white; }
+  .button.primary:hover { background: var(--blue-dark); }
+  .button.dark { background: var(--navy); border-color: var(--navy); color: white; }
+  .fineprint { color: var(--muted); font-size: 13px; }
+  .section { padding: 88px 0; }
+  .section.white { background: #fff; }
+  .section-heading { max-width: 700px; margin-bottom: 38px; }
+  .section-heading p { color: var(--muted); font-size: 17px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .card { padding: 24px; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); box-shadow: 0 8px 28px rgba(20, 35, 60, .05); }
+  .step-num { width: 32px; height: 32px; display: grid; place-items: center; margin-bottom: 22px; border-radius: 9px; background: #eaf1ff; color: var(--blue); font-weight: 800; }
+  .card p { margin: 0; color: var(--muted); }
+  .demo-note { margin-top: 26px; padding: 15px 18px; border-radius: 10px; background: #fff8ea; border: 1px solid #f1dfb7; color: #6e5726; font-size: 14px; }
+  .board {
+    padding: 14px;
+    border: 1px solid #d8e0ec;
+    border-radius: 16px;
+    background: #eef2f7;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .board-bar { display: flex; align-items: center; gap: 8px; padding: 3px 3px 14px; }
+  .board-dot { width: 9px; height: 9px; border-radius: 50%; background: #c6cfdd; }
+  .board-label { margin-left: auto; color: #718097; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+  .lanes { display: grid; grid-template-columns: repeat(4, minmax(145px, 1fr)); gap: 10px; }
+  .lane { min-height: 260px; padding: 10px; border-radius: 10px; background: #f8fafd; }
+  .lane-title { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 12px; font-weight: 800; }
+  .count { color: #8491a3; }
+  .story { margin: 8px 0; padding: 10px; border-left: 3px solid var(--blue); border-radius: 6px; background: #fff; box-shadow: 0 1px 3px rgba(26,42,70,.09); font-size: 11px; line-height: 1.35; }
+  .story.green { border-color: var(--green); }.story.purple { border-color: var(--purple); }.story.orange { border-color: var(--orange); }
+  .tag { display: block; margin-top: 6px; color: #6c788b; font-size: 10px; font-weight: 700; }
+  .prompt-card { border: 1px solid var(--line); border-radius: 16px; background: #fff; box-shadow: var(--shadow); overflow: hidden; }
+  .prompt-head { display: flex; gap: 10px; align-items: center; padding: 18px 20px; border-bottom: 1px solid var(--line); font-weight: 800; }
+  .agent-pill { margin-left: auto; padding: 5px 9px; border-radius: 999px; background: #eaf1ff; color: var(--blue); font-size: 11px; }
+  .prompt-code { margin: 18px; padding: 18px; border-radius: 10px; background: #182235; color: #eef3fb; font: 13px/1.65 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+  .prompt-foot { padding: 0 20px 20px; color: var(--muted); font-size: 14px; }
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 52px; align-items: center; }
+  .footer { padding: 36px 0 50px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+  .footer-row { display: flex; gap: 20px; justify-content: space-between; flex-wrap: wrap; }
+
+  @media (max-width: 760px) {
+    .topbar { padding: 0 18px; gap: 16px; }
+    .nav .optional { display: none; }
+    .shell { width: min(100% - 28px, 1100px); }
+    .section { padding: 60px 0; }
+    .split, .grid-3 { grid-template-columns: 1fr; gap: 18px; }
+    .lanes { width: 670px; }
+    .board { overflow-x: auto; }
+    .button-row .button { flex: 1 1 190px; }
+  }
+
+  /* --- #1 Animated board demo: a story visibly hops Todo → Doing → Done --- */
+  .board-label .live-dot { display:inline-block; width:7px; height:7px; margin-right:6px; border-radius:50%; background:var(--green); vertical-align:middle; animation:livePulse 1.8s ease-in-out infinite; }
+  @keyframes livePulse { 0%,100%{ opacity:.35; transform:scale(.8);} 50%{ opacity:1; transform:scale(1);} }
+  .lane { position:relative; }
+  /* The same card is placed in Todo, Doing, Done; each fades in on its turn to read as movement. */
+  .story.demo { position:relative; opacity:0; transform:translateY(-6px); box-shadow:0 6px 16px rgba(57,119,233,.25); }
+  .story.demo.s1 { animation:hop1 6s ease-in-out infinite; }
+  .story.demo.s2 { animation:hop2 6s ease-in-out infinite; }
+  .story.demo.s3 { animation:hop3 6s ease-in-out infinite; }
+  @keyframes hop1 { 0%,22%{opacity:1;transform:translateY(0);} 30%,100%{opacity:0;transform:translateY(-6px);} }
+  @keyframes hop2 { 0%,30%{opacity:0;transform:translateY(-6px);} 38%,55%{opacity:1;transform:translateY(0);} 63%,100%{opacity:0;transform:translateY(-6px);} }
+  @keyframes hop3 { 0%,63%{opacity:0;transform:translateY(-6px);} 71%,92%{opacity:1;transform:translateY(0);} 100%{opacity:0;transform:translateY(-6px);} }
+  .demo-caption { margin-top:12px; text-align:center; color:#718097; font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; }
+  @media (prefers-reduced-motion: reduce) {
+    .story.demo.s1,.story.demo.s2,.story.demo.s3 { animation:none; opacity:1; transform:none; }
+    .board-label .live-dot { animation:none; opacity:1; }
+  }
+  /* --- #3 What-your-agent-will-do stepper --- */
+  .agent-flow { margin-top:26px; padding:20px; border:1px solid var(--line); border-radius:14px; background:var(--panel); box-shadow:0 8px 28px rgba(20,35,60,.05); }
+  .agent-flow-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+  .agent-flow-head h3 { margin:0; font-size:16px; }
+  .agent-flow-time { padding:5px 10px; border-radius:999px; background:#eaf7ef; color:var(--green); font-size:12px; font-weight:800; }
+  .agent-steps { list-style:none; margin:14px 0 0; padding:0; display:grid; gap:2px; }
+  .agent-steps li { position:relative; display:flex; gap:14px; padding:12px 0; }
+  .agent-steps li:not(:last-child)::after { content:""; position:absolute; left:15px; top:34px; bottom:-2px; width:2px; background:linear-gradient(var(--line),transparent); }
+  .flow-num { flex:0 0 32px; width:32px; height:32px; display:grid; place-items:center; border-radius:9px; background:#eaf1ff; color:var(--blue); font-weight:800; font-size:14px; z-index:1; }
+  .flow-body { display:flex; flex-direction:column; }
+  .flow-body strong { font-size:14px; }
+  .flow-body span { color:var(--muted); font-size:13px; }
+</style></head>
+<body>
+  <header class="topbar"><a class="brand" href="/welcome">Pivotal</a><nav class="nav"><a href="#preview">Board preview</a><a class="optional" href="#how">How it works</a></nav><div class="nav-right review-chip">Direction A · reference prototype</div></header>
+  <main>
+    <section class="section" id="preview"><div class="shell split">
+      <div><div class="eyebrow">Markdown-native project tracking</div><h1>A Kanban board your AI agent can manage with you.</h1><p class="lead">Stories live in plain Markdown, so clicks, code, and AI all update the same source of truth.</p><div class="button-row"><a class="button primary" href="/">Explore the demo board →</a><a class="button" href="#agent">Set up my AI agent</a></div><p class="fineprint">No account needed. This shared demo uses fictional data and resets on redeploy.</p></div>
+      <div class="board" aria-label="Preview of the Pivotal Kanban board"><div class="board-bar"><i class="board-dot"></i><i class="board-dot"></i><i class="board-dot"></i><span class="board-label"><i class="live-dot"></i>Live board preview</span></div><div class="lanes">
+        <div class="lane"><div class="lane-title">Icebox <span class="count">6</span></div><div class="story orange">Confetti when a card lands in Done<span class="tag">#board_polish</span></div><div class="story purple">Share cookbook links with family<span class="tag">#cookbook_app</span></div></div>
+        <div class="lane"><div class="lane-title">Todo <span class="count">7</span></div><div class="story demo s1">Calibrate the barometric altimeter<span class="tag">#rocket_launch</span></div><div class="story green">Add moisture-sensor battery level<span class="tag">#greenhouse</span></div></div>
+        <div class="lane"><div class="lane-title">Doing <span class="count">3</span></div><div class="story demo s2">Calibrate the barometric altimeter<span class="tag">#rocket_launch</span></div><div class="story purple">Build the weekly meal-plan generator<span class="tag">#cookbook_app</span></div></div>
+        <div class="lane"><div class="lane-title">Done <span class="count">6</span></div><div class="story demo s3">Calibrate the barometric altimeter<span class="tag">#rocket_launch</span></div><div class="story green">Install soil sensors in beds 1–4<span class="tag">#greenhouse</span></div></div>
+      </div><div class="demo-caption">Watch a story move Todo → Doing → Done</div></div>
+    </div></section>
+    <section class="section white" id="how"><div class="shell"><div class="section-heading"><div class="eyebrow">One board, two ways to work</div><h2>Start wherever you’re comfortable.</h2><p>Use the visual board yourself, or let an agent read and update the exact same work.</p></div><div class="grid-3">
+      <article class="card"><div class="step-num">1</div><h3>Add work</h3><p>Create stories by typing on the board or asking your agent in ordinary language.</p></article>
+      <article class="card"><div class="step-num">2</div><h3>Move it forward</h3><p>Track stories across Icebox, Todo, Doing, and Done—with stable IDs and history.</p></article>
+      <article class="card"><div class="step-num">3</div><h3>Keep your files</h3><p>Everything stays portable in Markdown instead of disappearing into a proprietary database.</p></article>
+    </div></div></section>
+    <section class="section" id="agent"><div class="shell split"><div><div class="eyebrow">Agent setup</div><h2>Give your agent the tour guide.</h2><p class="lead">Paste one prompt into Codex or Claude Code. Your agent will learn the board, explain it, and help create your first story.</p><div class="button-row"><a class="button dark" href="#prompt">Show the prompt ↓</a><a class="button" href="https://pivotal-kanban-demo.onrender.com/skill.md">Read API & skill guide</a></div></div><div class="prompt-card" id="prompt"><div class="prompt-head">First-time setup <span class="agent-pill">Codex + Claude Code</span></div><div class="prompt-code">Fetch https://pivotal-kanban-demo.onrender.com/skill.md and follow it. Then give me a first-time tour of the board and help me add my first story.</div><div class="prompt-foot"><strong>Why this works:</strong> the guide teaches your agent how to read the board, create stories, attach notes, and move work between lanes.</div></div></div>
+    <div class="shell"><div class="agent-flow">
+      <div class="agent-flow-head"><h3>What your agent will do</h3><span class="agent-flow-time">≈ 2 min</span></div>
+      <ol class="agent-steps">
+        <li><span class="flow-num">1</span><span class="flow-body"><strong>Read the board's API &amp; conventions</strong><span>Fetches the skill guide and learns the lanes, epics, and story format.</span></span></li>
+        <li><span class="flow-num">2</span><span class="flow-body"><strong>Give you a short guided tour</strong><span>Summarizes what's in each lane and how the four epics are progressing.</span></span></li>
+        <li><span class="flow-num">3</span><span class="flow-body"><strong>Help you shape your first story</strong><span>Turns what you're working on into a clear title and the right epic tag.</span></span></li>
+        <li><span class="flow-num">4</span><span class="flow-body"><strong>Add it to the right lane</strong><span>Files the story and you watch it appear on the live board.</span></span></li>
+      </ol>
+    </div></div></section>
+  </main>
+  <footer class="footer"><div class="shell footer-row"><span>Pivotal · A Markdown-backed Kanban board</span><span><a href="/">Board</a> · <a href="/portfolio">Portfolios</a> · <a href="https://pivotal-kanban-demo.onrender.com/skill.md">API &amp; skill</a></span></div></footer>
+</body></html>

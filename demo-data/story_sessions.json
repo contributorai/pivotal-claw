@@ -1,0 +1,46 @@
+{
+  "t:strt001": {
+    "sessions": [],
+    "notes": [
+      {
+        "type": "note",
+        "text": "You just opened a story. This panel is where longer detail lives — notes, and (on a laptop instance) the Claude/Codex work sessions launched for this card. A story title is one line of Markdown; a note is the room to explain it. Next: close this, then drag the '👉 Try it' card in Todo over to Doing.",
+        "ts": 1784563200000,
+        "at": "2026-07-20"
+      }
+    ]
+  },
+  "t:boar001": {
+    "sessions": [],
+    "notes": [
+      {
+        "type": "note",
+        "text": "Drag-and-drop writes the move straight back to the Markdown lane files — no database. Because storage is plain text, a human dragging a card and an agent POSTing to /api/sync are editing the exact same source of truth.",
+        "ts": 1782864000000,
+        "at": "2026-06-30"
+      }
+    ]
+  },
+  "t:aapi002": {
+    "sessions": [],
+    "notes": [
+      {
+        "type": "note",
+        "text": "The server owns ID generation: an agent POSTs a story with just text + status, and /api/sync assigns the stable t:xxxxxxx id and prepends it to the right lane file. That's why an agent never has to invent an id — it reads the receipt to learn it.",
+        "ts": 1783296000000,
+        "at": "2026-07-05"
+      }
+    ]
+  },
+  "t:aapi003": {
+    "sessions": [],
+    "notes": [
+      {
+        "type": "note",
+        "text": "In progress: moves carry expected_text as an optimistic lock. If the stored line changed since the agent last read it, the sync receipt reports a skip instead of silently overwriting, and the agent re-fetches and retries. Prevents a human drag and an agent move from clobbering each other.",
+        "ts": 1784476800000,
+        "at": "2026-07-19"
+      }
+    ]
+  }
+}

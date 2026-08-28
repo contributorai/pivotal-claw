@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sessions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>
+    if (localStorage.getItem("pivotalTheme") === "dark") {
+      document.documentElement.setAttribute("data-theme", "dark");
+    }
+  </script>
+  <style>
+    :root {
+      --page-bg: #f4f6fa;
+      --card-bg: #ffffff;
+      --ink: #1e293b;
+      --muted: #64748b;
+      --line: #cbd5e1;
+      --surface-hover: #f8fafc;
+      --surface-subtle: #f1f5f9;
+      --blue: hsl(215, 90%, 55%);
+      --green: hsl(142, 76%, 40%);
+      --orange: hsl(35, 95%, 50%);
+      --red: hsl(0, 84%, 60%);
+      --strong-bg: #1e293b;
+      --code-text: #0f172a;
+      --pin: hsl(6, 63%, 46%);
+      --pin-tint: hsl(6, 63%, 97%);
+      --pin-line: hsl(6, 40%, 84%);
+    }
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --page-bg: #16181d;
+      --card-bg: #20242c;
+      --ink: #e7e9ee;
+      --muted: #8b909c;
+      --line: #2a2e37;
+      --surface-hover: #262b34;
+      --surface-subtle: #1c1f26;
+      --blue: hsl(215, 90%, 64%);
+      --green: hsl(142, 55%, 55%);
+      --orange: hsl(35, 95%, 58%);
+      --red: hsl(0, 84%, 66%);
+      --strong-bg: #0d0f13;
+      --code-text: #e7e9ee;
+      --pin: hsl(6, 72%, 66%);
+      --pin-tint: hsl(6, 22%, 17%);
+      --pin-line: hsl(6, 26%, 32%);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--page-bg);
+      color: var(--ink);
+      font-family: "Inter", -apple-system, sans-serif;
+      font-size: 13px;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--line);
+      background: var(--card-bg);
+      position: sticky;
+      top: 0;
+    }
+    .logo {
+      font-family: "Outfit", sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    header h1 {
+      font-family: "Outfit", sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      margin: 0;
+      color: var(--muted);
+    }
+    header .spacer { flex: 1; }
+    #sessions-status { color: var(--muted); font-size: 12px; }
+    #refresh-sessions {
+      font: inherit;
+      font-size: 12px;
+      padding: 4px 10px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--card-bg);
+      color: var(--ink);
+      cursor: pointer;
+    }
+    #refresh-sessions:hover { background: var(--surface-hover); }
+    main { max-width: 980px; margin: 0 auto; padding: 12px 16px 48px; }
+    .session-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 5px 10px;
+      border-bottom: 1px solid var(--line);
+      cursor: pointer;
+      min-height: 32px;
+    }
+    .session-row:last-child { border-bottom: 0; }
+    .session-row:hover { background: var(--surface-hover); }
+    .provider-badge {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 4px;
+      flex: none;
+    }
+    .provider-claude { color: var(--orange); border: 1px solid var(--orange); }
+    .provider-codex { color: var(--blue); border: 1px solid var(--blue); }
+    .session-title {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-weight: 500;
+    }
+    .session-project {
+      flex: none;
+      width: 130px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .session-age { flex: none; width: 52px; text-align: right; color: var(--muted); font-size: 12px; }
+    .session-link-cell { flex: none; width: 160px; display: flex; justify-content: flex-end; gap: 4px; position: relative; }
+    .story-chip {
+      max-width: 150px;
+      white-space: nowrap;
+      font-size: 11px;
+      padding: 1px 7px;
+      border-radius: 9px;
+      background: var(--surface-subtle);
+      border: 1px solid var(--line);
+      color: var(--green);
+      text-decoration: none;
+    }
+    /* The label ellipsises, not the chip, so the pin button is never clipped. */
+    .story-chip .chip-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; color: inherit; text-decoration: none; }
+    .story-chip:hover { border-color: var(--green); }
+    .link-story-btn {
+      font: inherit;
+      font-size: 11px;
+      padding: 1px 8px;
+      border: 1px dashed var(--line);
+      border-radius: 9px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+    }
+    .link-story-btn:hover { color: var(--ink); border-color: var(--muted); }
+    .resume-btn {
+      flex: none;
+      font: inherit;
+      font-size: 11px;
+      padding: 1px 8px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: var(--surface-subtle);
+      color: var(--blue);
+      cursor: pointer;
+    }
+    .resume-btn:hover { border-color: var(--blue); }
+    .resume-btn:disabled { opacity: 0.6; cursor: default; }
+    .resume-btn.running { color: var(--green); }
+    .resume-btn.running:hover { border-color: var(--green); }
+    .running-dot {
+      flex: none;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 4px var(--green);
+    }
+    .story-picker {
+      position: absolute;
+      right: 0;
+      top: 24px;
+      z-index: 10;
+      width: 320px;
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+      padding: 6px;
+    }
+    .story-picker input {
+      width: 100%;
+      font: inherit;
+      font-size: 12px;
+      padding: 4px 8px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--surface-subtle);
+      color: var(--ink);
+    }
+    .story-picker-results { max-height: 220px; overflow-y: auto; margin-top: 4px; }
+    .story-picker-item {
+      display: flex;
+      gap: 6px;
+      align-items: baseline;
+      padding: 4px 6px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 12px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .story-picker-item:hover { background: var(--surface-hover); }
+    .story-picker-item .status { flex: none; font-size: 10px; color: var(--muted); }
+    .story-picker-item .story-title { overflow: hidden; text-overflow: ellipsis; }
+    .session-preview {
+      padding: 8px 12px 12px 42px;
+      border-bottom: 1px solid var(--line);
+      background: var(--surface-subtle);
+      font-size: 12px;
+    }
+    .session-preview .preview-meta { color: var(--muted); margin-bottom: 6px; font-family: "JetBrains Mono", monospace; font-size: 11px; }
+    .preview-msg { margin: 4px 0; display: flex; gap: 8px; }
+    .preview-msg .role {
+      flex: none;
+      width: 24px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 10px;
+      font-weight: 700;
+      padding-top: 1px;
+    }
+    .preview-msg.user .role { color: var(--green); }
+    .preview-msg.assistant .role { color: var(--blue); }
+    .preview-msg .text {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      color: var(--code-text);
+    }
+    section h2 {
+      font-family: "Outfit", sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 6px 2px;
+    }
+    #pinned-section { margin-bottom: 16px; }
+    #agent-work-pulse { margin-bottom: 16px; }
+    .pulse-heading { display: flex; align-items: baseline; gap: 8px; margin-bottom: 6px; }
+    .pulse-heading h2 { margin-bottom: 0; }
+    #pulse-status { color: var(--muted); font-size: 11px; }
+    .pulse-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+    .pulse-card { border: 1px solid var(--line); border-radius: 8px; background: var(--card-bg); padding: 12px; }
+    .pulse-value { display: block; font-family: "Outfit", sans-serif; font-size: 24px; font-weight: 800; line-height: 1; }
+    .pulse-label { display: block; margin-top: 5px; color: var(--muted); font-size: 11px; }
+    #agent-work-pulse.is-unavailable .pulse-value { color: var(--muted); }
+    @media (max-width: 620px) { .pulse-grid { grid-template-columns: 1fr; } }
+    #pinned-list, #sessions-list { border: 1px solid var(--line); border-radius: 8px; background: var(--card-bg); overflow: hidden; }
+    /* Pins, ported from the resume dashboard's PIN_STYLE onto this page's tokens. */
+    .pin-ico { width: 14px; height: 14px; display: block; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linejoin: round; stroke-linecap: round; }
+    .pin-btn.pinned .pin-ico .body, .pin-chip.on .pin-ico .body { fill: currentColor; }
+    .pin-btn {
+      flex: none;
+      display: inline-flex;
+      padding: 2px;
+      border: 1px solid transparent;
+      border-radius: 5px;
+      background: none;
+      color: var(--line);
+      cursor: pointer;
+      transition: color 140ms, border-color 140ms;
+    }
+    .session-row:hover .pin-btn { color: var(--muted); }
+    .pin-btn:hover { border-color: var(--pin-line); color: var(--pin); }
+    .pin-btn:disabled { opacity: 0.5; cursor: default; }
+    .pin-btn.pinned, .session-row:hover .pin-btn.pinned { color: var(--pin); border-color: var(--pin-line); }
+    .session-row.is-pinned { background: var(--pin-tint); }
+    .session-row.is-pinned:hover { background: var(--pin-tint); filter: brightness(0.98); }
+    .pin-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      padding: 3px 10px;
+      border: 1px solid var(--pin-line);
+      border-radius: 999px;
+      background: var(--card-bg);
+      color: var(--pin);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .pin-chip:hover { border-color: var(--pin); }
+    .pin-chip .n { font-variant-numeric: tabular-nums; opacity: 0.75; }
+    .chip-pin {
+      flex: none;
+      display: none;
+      padding: 0;
+      margin-left: 3px;
+      border: 0;
+      background: none;
+      color: var(--muted);
+      cursor: pointer;
+      vertical-align: middle;
+    }
+    .story-chip { display: inline-flex; align-items: center; gap: 2px; }
+    .story-chip:hover .chip-pin, .chip-pin.pinned { display: inline-flex; }
+    .chip-pin:hover, .chip-pin.pinned { color: var(--pin); }
+    .chip-pin .pin-ico { width: 11px; height: 11px; }
+    .chip-pin.pinned .pin-ico .body { fill: currentColor; }
+    .pinned-story-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 5px 10px;
+      border-bottom: 1px solid var(--line);
+      background: var(--pin-tint);
+      min-height: 32px;
+    }
+    .pinned-story-row .story-link {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-weight: 600;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .pinned-story-row .story-link:hover { color: var(--blue); }
+    .pinned-story-row .story-status { flex: none; font-size: 11px; color: var(--muted); }
+    .pinned-list-group:last-child .session-row:last-child { border-bottom: 0; }
+    .session-row.nested { padding-left: 22px; border-left: 3px solid var(--pin-line); }
+    .empty-state, .error-state { padding: 18px; color: var(--muted); text-align: center; }
+    .error-state { color: var(--red); }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="logo" href="/">Pivotal</a>
+    <h1>Sessions</h1>
+    <span class="spacer"></span>
+    <a class="pin-chip" id="pin-chip" href="#pinned-section" data-testid="pin-chip">Pinned <span class="n">0</span></a>
+    <span id="sessions-status" data-testid="sessions-status"></span>
+    <button id="refresh-sessions" type="button" data-testid="refresh-sessions">Refresh</button>
+  </header>
+  <main>
+    <section id="agent-work-pulse" data-testid="agent-work-pulse">
+      <div class="pulse-heading"><h2>Agent Work Pulse</h2><span id="pulse-status">Loading ClickHouse…</span></div>
+      <div class="pulse-grid">
+        <article class="pulse-card"><strong class="pulse-value" data-testid="pulse-active-sessions">—</strong><span class="pulse-label">Active agent sessions</span></article>
+        <article class="pulse-card"><strong class="pulse-value" data-testid="pulse-completed-stories">—</strong><span class="pulse-label">Stories done · 24h</span></article>
+        <article class="pulse-card"><strong class="pulse-value" data-testid="pulse-median-cycle">—</strong><span class="pulse-label">Median Doing → Done</span></article>
+      </div>
+    </section>
+    <section id="pinned-section">
+      <h2>Pinned</h2>
+      <div id="pinned-list" data-testid="pinned-list"></div>
+    </section>
+    <section>
+      <h2>Recent</h2>
+      <div id="sessions-list" data-testid="sessions-list"></div>
+    </section>
+  </main>
+  <script src="/todo_data.js"></script>
+  <script src="sessionsHistoryPage.js"></script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+# Optional: the driver for the Agent Work Pulse operational event store.
+# The board runs without it — the store stays inert unless PIVOTAL_POSTGRES_DSN
+# is set, and the driver is imported lazily only when a DSN is configured.
+psycopg[binary]>=3.1,<4

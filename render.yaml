@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: pivotal-kanban-demo
+    runtime: python
+    plan: free
+    branch: deploy
+    buildCommand: pip install -r cc/pivotal/requirements.txt -r cc/pivotal/requirements-postgres.txt
+    startCommand: gunicorn --chdir cc/pivotal --worker-class gthread --workers 1 --threads 16 --timeout 0 --bind 0.0.0.0:$PORT server:app
+    envVars:
+      - key: CLOUD_DEPLOYMENT_NOT_ON_LAPTOP
+        value: "1"
+      - key: PIVOTAL_TODO_DIR
+        value: /opt/render/project/src/demo-data
+      - key: PYTHON_VERSION
+        value: "3.12.6"
+      - key: PIVOTAL_POSTGRES_DSN
+        sync: false
+      - key: PIVOTAL_CLICKHOUSE_URL
+        sync: false
+      - key: PIVOTAL_CLICKHOUSE_USER
+        sync: false
+      - key: PIVOTAL_CLICKHOUSE_PASSWORD
+        sync: false

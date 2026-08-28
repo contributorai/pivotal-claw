@@ -1,0 +1,37 @@
+# Root release metadata
+.gitignore
+LICENSE
+README.md
+SECURITY.md
+PUBLIC_RELEASE_FILES.txt
+render.yaml
+
+# CI and dependency automation
+.github/workflows/ci.yml
+.github/workflows/codeql.yml
+.github/workflows/secret-scan.yml
+.github/dependabot.yml
+
+# Runtime, tests, and bundled agent helpers exercised by the suite
+cc/pivotal/*.py
+cc/pivotal/requirements*.txt
+cc/pivotal/start.sh
+cc/pivotal/tests/*.py
+cc/todo/*.py
+cc/todo/tree_viewer/*
+.agents/skills/pivotal-groom/SKILL.md
+.agents/skills/pivotal-groom/scripts/*.py
+.agents/skills/pivotal_portfolio/SKILL.md
+.agents/skills/pivotal_portfolio/scripts/*.py
+
+# Fictional cloud-demo dataset only
+demo-data/*.md
+demo-data/*.json
+
+# Public architecture and acceptance evidence
+docs/postgres-event-store.md
+docs/clickhouse-agent-work-pulse-verification.md
+
+# Repeatable release tooling
+scripts/audit_public_release.py
+scripts/build_public_release.py
