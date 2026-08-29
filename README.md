@@ -13,6 +13,10 @@ board's write path:
 
 This hackathon release is MIT licensed and includes only fictional demo data.
 
+## Overview
+
+[Watch the overview deck with voiceover](https://docs.google.com/videos/d/1yT6YAnybXAYEviiGwp6CJw8RW7mlGtrvH-WhtpuKT98/edit).
+
 ## Quick start
 
 Requires Python 3.12+.
