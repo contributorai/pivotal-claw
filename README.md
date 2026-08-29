@@ -11,11 +11,9 @@ board's write path:
 - How many stories finished in the last 24 hours?
 - What is the median Doing-to-Done cycle time?
 
-This hackathon release is MIT licensed and includes only fictional demo data.
-
 ## Overview
 
-[Watch the overview deck with voiceover](https://docs.google.com/videos/d/1yT6YAnybXAYEviiGwp6CJw8RW7mlGtrvH-WhtpuKT98/edit).
+[Watch the overview deck with voiceover](https://youtu.be/6_9XW6UhPx8).
 
 ## Quick start
 
